@@ -156,13 +156,23 @@ If your driver manager is configured to accept relative paths, opt out:
 | `ManifestName` | the driver id | Base name of the generated `.toml`. Must be unique across items. |
 | `Entrypoint` | from the archive | Driver init symbol. Omitted from the manifest when unknown. |
 | `AdbcVersion` | from the archive | ADBC API version recorded in the manifest. |
+| `Prerelease` | project default | `allow` or `deny`, overriding `AdbcDriverAllowPrerelease` for this driver only. |
 | `PlatformOverride` | none | `rid=platform` pairs, for a registry publishing a tuple that is not in the built-in table. |
 | `CopyToBuildOutput` | `true` | Deploy into `$(TargetDir)`. |
 | `CopyToPublishDirectory` | `true` | Include in publish output. |
 
 Version constraints accept an exact version (`1.11.0`), a wildcard (`*`), comparisons
-(`>=1.10.0 <2.0.0`), caret (`^1.11.0`), and tilde (`~1.11.0`). Prereleases are excluded
-unless the constraint names one or `AdbcDriverAllowPrerelease` is set.
+(`>=1.10.0 <2.0.0`), caret (`^1.11.0`), and tilde (`~1.11.0`).
+
+Prereleases are excluded unless the constraint itself names one, or you opt in. Some
+drivers publish nothing else, so this is worth knowing about:
+
+```xml
+<AdbcDriver Include="clickhouse" Version="*" Prerelease="allow" Rids="linux-x64" />
+```
+
+`Prerelease` on the item beats the project-wide `AdbcDriverAllowPrerelease`, in either
+direction, so one driver can track prereleases without opting everything else in.
 
 ### Properties
 
@@ -304,6 +314,30 @@ application — with its own licence terms — is not a decision a transitive de
 should be making. Reference the package from the executable that needs the drivers.
 
 ---
+
+## If you already use the `dbc` CLI
+
+`dbc` has its own driver list (`dbc.toml`) and lock file (`dbc.lock`). They are **not
+interchangeable with the files here**, and the two can coexist without interfering:
+`dbc` installs drivers into machine or user locations, while this package deploys them
+next to one application. Different scope, different files.
+
+If you keep both, expect to declare your drivers twice. That is the current cost of
+using both tools, and the reason is structural rather than stylistic:
+
+- `dbc.lock` records **one platform per driver** — its loader keys entries by driver name
+  alone — because it describes what was installed on *this* machine. An application that
+  ships for `win-x64` and `linux-x64` cannot be expressed in it.
+- `dbc.lock` records a version but **no URL**, so it pins a version rather than specific
+  bytes.
+- Its `checksum` is of the **installed shared library**, computed after extraction. The
+  `archiveSha256` here exists so that verification can happen *before* anything is
+  unpacked.
+
+Every field in `dbc.lock` has an equivalent in `adbc.drivers.lock.json` — `name`→`id`,
+`version`→`version`, `platform`→`adbcPlatform`, `checksum`→`driverSha256` — so nothing is
+lost by using this one; the extra fields are what make offline, pre-extraction
+verification possible.
 
 ## Troubleshooting
 

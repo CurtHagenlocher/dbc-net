@@ -45,6 +45,13 @@ namespace Adbc.Drivers.Build.Tests
             string id,
             string versionSpec,
             params string[] rids) =>
+            RequestWithPrerelease(id, versionSpec, null, rids);
+
+        private static DriverRequest RequestWithPrerelease(
+            string id,
+            string versionSpec,
+            bool? allowPrerelease,
+            params string[] rids) =>
             new DriverRequest(
                 id,
                 versionSpec,
@@ -54,7 +61,8 @@ namespace Adbc.Drivers.Build.Tests
                 adbcVersion: null,
                 platformOverrides: new Dictionary<string, string>(),
                 copyToBuildOutput: true,
-                copyToPublishDirectory: true);
+                copyToPublishDirectory: true,
+                allowPrerelease: allowPrerelease);
 
         private static DriverResolver CreateResolver(TempDirectory temp, List<string>? warnings = null) =>
             new DriverResolver(
@@ -133,6 +141,59 @@ namespace Adbc.Drivers.Build.Tests
                         new[] { Request("snowflake", "*", "win-x64") },
                         Options(registry, allowPrerelease: true))
                     .Drivers[0].Version);
+        }
+
+        [Fact]
+        public void PerDriverPrereleaseMetadataOverridesTheProjectWideDefault()
+        {
+            using TempDirectory temp = new TempDirectory("resolve");
+            FixtureRegistry registry = BuildRegistry(temp);
+
+            // One driver opts in without the project-wide flag being set.
+            DriverLock resolved = CreateResolver(temp).Resolve(
+                new[] { RequestWithPrerelease("snowflake", "*", allowPrerelease: true, "win-x64") },
+                Options(registry, allowPrerelease: false));
+
+            Assert.Equal("2.0.0-rc.1", resolved.Drivers[0].Version);
+        }
+
+        [Fact]
+        public void PerDriverPrereleaseMetadataCanOptOutOfTheProjectWideDefault()
+        {
+            using TempDirectory temp = new TempDirectory("resolve");
+            FixtureRegistry registry = BuildRegistry(temp);
+
+            DriverLock resolved = CreateResolver(temp).Resolve(
+                new[] { RequestWithPrerelease("snowflake", "*", allowPrerelease: false, "win-x64") },
+                Options(registry, allowPrerelease: true));
+
+            Assert.Equal("1.11.0", resolved.Drivers[0].Version);
+        }
+
+        [Fact]
+        public void SaysSoWhenADriverHasPublishedOnlyPrereleases()
+        {
+            // The real registry has drivers in exactly this state — clickhouse ships only
+            // v0.1.0-alpha.1 — and "no version satisfies *" is a baffling thing to be told
+            // when versions plainly exist.
+            using TempDirectory temp = new TempDirectory("resolve");
+            FixtureRegistry registry = new FixtureRegistry(temp.Combine("registry"));
+            registry.AddDriver("earlybird")
+                .AddRelease("v0.1.0-alpha.1")
+                .AddPackage("windows_amd64", "d.dll", "prerelease only");
+            registry.Write();
+
+            ResolutionException ex = Assert.Throws<ResolutionException>(() => CreateResolver(temp)
+                .Resolve(new[] { Request("earlybird", "*", "win-x64") }, Options(registry)));
+
+            Assert.Contains("Only prerelease versions match", ex.Message, StringComparison.Ordinal);
+            Assert.Contains("Prerelease=\"allow\"", ex.Message, StringComparison.Ordinal);
+
+            // And opting in resolves it.
+            DriverLock resolved = CreateResolver(temp).Resolve(
+                new[] { RequestWithPrerelease("earlybird", "*", allowPrerelease: true, "win-x64") },
+                Options(registry));
+            Assert.Equal("0.1.0-alpha.1", resolved.Drivers[0].Version);
         }
 
         [Fact]

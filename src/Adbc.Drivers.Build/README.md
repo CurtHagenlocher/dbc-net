@@ -54,6 +54,7 @@ git add adbc.drivers.lock.json
 | `ManifestName` | Base name of the generated `.toml` manifest. Defaults to the driver id. |
 | `Entrypoint` | Driver init symbol. Defaults to whatever the archive declares; omitted when unknown. |
 | `AdbcVersion` | ADBC API version recorded in the manifest. Defaults to the archive's value. |
+| `Prerelease` | `allow` or `deny`, overriding the project-wide setting for this driver only. |
 | `PlatformOverride` | `rid=platform` pairs, for a registry publishing a tuple the built-in table does not map. |
 | `CopyToBuildOutput` | Deploy to `$(TargetDir)`. Default `true`. |
 | `CopyToPublishDirectory` | Deploy on publish. Default `true`. |

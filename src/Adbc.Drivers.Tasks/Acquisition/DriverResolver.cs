@@ -142,11 +142,19 @@ namespace Adbc.Drivers.Build.Acquisition
                 candidates.Add(release.Version);
             }
 
-            SemanticVersion? selected = range!.SelectBest(candidates, options.AllowPrerelease);
+            // Per-item metadata wins over the project-wide default, so that one driver can
+            // track prereleases without opting every other driver in.
+            bool allowPrerelease = request.AllowPrerelease ?? options.AllowPrerelease;
+
+            SemanticVersion? selected = range!.SelectBest(candidates, allowPrerelease);
             if (selected is null)
             {
+                string prereleaseHint = !allowPrerelease && HasOnlyPrereleaseMatches(range, candidates)
+                    ? " Only prerelease versions match; set Prerelease=\"allow\" on the item to accept one."
+                    : string.Empty;
+
                 throw new ResolutionException(
-                    $"No version of driver '{request.Id}' satisfies '{range.Original}'. Published versions: {string.Join(", ", Sorted(Describe(candidates)))}.");
+                    $"No version of driver '{request.Id}' satisfies '{range.Original}'. Published versions: {string.Join(", ", Sorted(Describe(candidates)))}.{prereleaseHint}");
             }
 
             DriverRelease chosen = entry.FindRelease(selected)
@@ -265,6 +273,23 @@ namespace Adbc.Drivers.Build.Acquisition
             {
                 yield return package.Platform;
             }
+        }
+
+        /// <summary>
+        /// True when the constraint would have been satisfiable had prereleases been
+        /// permitted, so the error can say so instead of just listing versions.
+        /// </summary>
+        private static bool HasOnlyPrereleaseMatches(VersionRange range, IEnumerable<SemanticVersion> candidates)
+        {
+            foreach (SemanticVersion candidate in candidates)
+            {
+                if (candidate.IsPrerelease && range.Satisfies(candidate))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         private static List<string> Sorted(IEnumerable<string> values)

@@ -19,7 +19,8 @@ namespace Adbc.Drivers.Build.Acquisition
             string? adbcVersion,
             IReadOnlyDictionary<string, string> platformOverrides,
             bool copyToBuildOutput,
-            bool copyToPublishDirectory)
+            bool copyToPublishDirectory,
+            bool? allowPrerelease = null)
         {
             Id = id;
             VersionSpec = versionSpec;
@@ -30,6 +31,7 @@ namespace Adbc.Drivers.Build.Acquisition
             PlatformOverrides = platformOverrides;
             CopyToBuildOutput = copyToBuildOutput;
             CopyToPublishDirectory = copyToPublishDirectory;
+            AllowPrerelease = allowPrerelease;
         }
 
         /// <summary>Registry driver slug, for example <c>snowflake</c>.</summary>
@@ -61,6 +63,13 @@ namespace Adbc.Drivers.Build.Acquisition
         public bool CopyToBuildOutput { get; }
 
         public bool CopyToPublishDirectory { get; }
+
+        /// <summary>
+        /// Per-driver prerelease policy, or null to fall back to the project-wide
+        /// setting. Letting one driver track prereleases while the rest stay on stable
+        /// releases is a real need, and a single project-wide switch cannot express it.
+        /// </summary>
+        public bool? AllowPrerelease { get; }
 
         public string EffectiveManifestName =>
             string.IsNullOrWhiteSpace(ManifestName) ? Id : ManifestName!.Trim();

@@ -196,7 +196,8 @@ namespace Adbc.Drivers.Build.Tasks
                     NullIfEmpty(item.GetMetadata("AdbcVersion")),
                     ParsePlatformOverrides(id, item.GetMetadata("PlatformOverride"), normalized),
                     ParseBoolean(item.GetMetadata("CopyToBuildOutput"), true),
-                    ParseBoolean(item.GetMetadata("CopyToPublishDirectory"), true));
+                    ParseBoolean(item.GetMetadata("CopyToPublishDirectory"), true),
+                    ParsePrerelease(id, item.GetMetadata("Prerelease")));
 
                 // Surfaces an unmappable RID here rather than midway through a download.
                 foreach (string rid in normalized)
@@ -208,6 +209,35 @@ namespace Adbc.Drivers.Build.Tasks
             }
 
             return requests;
+        }
+
+        /// <summary>
+        /// Per-driver prerelease policy. Null means "use the project-wide setting".
+        /// </summary>
+        /// <remarks>
+        /// <c>allow</c> and <c>deny</c> are accepted alongside the boolean spellings so
+        /// that the metadata reads the same as the <c>prerelease</c> key in a
+        /// <c>dbc.toml</c> driver list, which is where the idea comes from.
+        /// </remarks>
+        private static bool? ParsePrerelease(string id, string? value)
+        {
+            if (string.IsNullOrWhiteSpace(value))
+            {
+                return null;
+            }
+
+            switch (value!.Trim().ToLowerInvariant())
+            {
+                case "allow":
+                case "true":
+                    return true;
+                case "deny":
+                case "false":
+                    return false;
+                default:
+                    throw new DriverRequestException(
+                        $"Prerelease metadata on driver '{id}' must be 'allow' or 'deny', but was '{value.Trim()}'.");
+            }
         }
 
         /// <summary>
