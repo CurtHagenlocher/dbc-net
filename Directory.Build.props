@@ -1,0 +1,48 @@
+<Project>
+
+  <PropertyGroup>
+    <RepoRoot>$([MSBuild]::EnsureTrailingSlash('$(MSBuildThisFileDirectory)'))</RepoRoot>
+    <PackageOutputPath>$(RepoRoot)artifacts\package\</PackageOutputPath>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+    <EnableNETAnalyzers>true</EnableNETAnalyzers>
+    <AnalysisLevel>latest-minimum</AnalysisLevel>
+    <DebugType>portable</DebugType>
+    <Deterministic>true</Deterministic>
+    <NoWarn>$(NoWarn);CA1848;CA1031</NoWarn>
+  </PropertyGroup>
+
+  <!--
+    GHSA-w3q9-fxm7-j8fq is reported against every published version of the
+    Microsoft.Build.* packages; there is no patched package, because the fix ships
+    in the MSBuild host (the .NET SDK and Visual Studio) rather than in the
+    reference assemblies. Those packages are referenced here with
+    ExcludeAssets="runtime" PrivateAssets="all", so nothing from them is compiled
+    into or shipped by this repository's packages, and the host always supplies its
+    own copy at run time. Suppressed narrowly by advisory so that any other audit
+    finding still fails the build.
+  -->
+  <ItemGroup>
+    <NuGetAuditSuppress Include="https://github.com/advisories/GHSA-w3q9-fxm7-j8fq" />
+  </ItemGroup>
+
+  <!-- Shared package identity. The product deliverable is Adbc.Drivers.Build. -->
+  <PropertyGroup>
+    <VersionPrefix>0.1.0</VersionPrefix>
+    <VersionSuffix Condition="'$(VersionSuffix)' == '' and '$(CI)' != 'true'">dev</VersionSuffix>
+    <Authors>dbc-net contributors</Authors>
+    <Company>dbc-net contributors</Company>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/CurtHagenlocher/dbc-net</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/CurtHagenlocher/dbc-net</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+  </PropertyGroup>
+
+</Project>

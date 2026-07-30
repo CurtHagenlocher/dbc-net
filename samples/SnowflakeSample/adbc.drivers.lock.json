@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "registries": [
+    "https://dbc-cdn.columnar.tech/"
+  ],
+  "drivers": [
+    {
+      "id": "snowflake",
+      "version": "1.11.0",
+      "name": "ASF Snowflake Driver",
+      "publisher": "ADBC Drivers Contributors",
+      "license": "Apache-2.0",
+      "adbcVersion": "v1.1.0",
+      "entrypoint": null,
+      "artifacts": [
+        {
+          "rid": "linux-x64",
+          "adbcPlatform": "linux_amd64",
+          "url": "https://dbc-cdn.columnar.tech/snowflake/v1.11.0/snowflake_linux_amd64_v1.11.0.tar.gz",
+          "archiveSha256": "83a5a630c6c5802f330cebbb12ab7be68f2322d836160181fa7360261e36f8d4",
+          "archiveLength": 16718737,
+          "driverFile": "libadbc_driver_snowflake.so",
+          "driverSha256": "aab55a5832ab92263a555c1506b64dbe10a81947627141769a96098cfed6ebe0",
+          "signatureFile": "libadbc_driver_snowflake.so.sig",
+          "signatureSha256": "d5aa9d8e760f988a0bb65c6a719ad7645e8f162eb3a1d6dec47848885e576ff2",
+          "signatureKeyFingerprint": null
+        },
+        {
+          "rid": "win-x64",
+          "adbcPlatform": "windows_amd64",
+          "url": "https://dbc-cdn.columnar.tech/snowflake/v1.11.0/snowflake_windows_amd64_v1.11.0.tar.gz",
+          "archiveSha256": "3f09dc49bb7970faaea2222a5ee74303ab102aa73ee921ab35a0f8f9abe17127",
+          "archiveLength": 16130052,
+          "driverFile": "libadbc_driver_snowflake.dll",
+          "driverSha256": "11af17a7452456617dbe143bcd1e4aeeeb1caa5976356855d5d4ce89a25dd652",
+          "signatureFile": "libadbc_driver_snowflake.dll.sig",
+          "signatureSha256": "c06977ba12392735a2d400c09660a01afe50be1817a612e60cdfb2a22a4f9bd4",
+          "signatureKeyFingerprint": null
+        }
+      ]
+    }
+  ]
+}

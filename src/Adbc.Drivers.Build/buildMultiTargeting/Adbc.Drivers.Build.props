@@ -1,0 +1,9 @@
+<Project>
+
+  <!--
+    Outer build of a multi-targeted project. Property defaults are shared with the inner
+    build so that `dotnet build -t:ResolveAdbcDriverLock` behaves the same either way.
+  -->
+  <Import Project="$(MSBuildThisFileDirectory)..\build\Adbc.Drivers.Build.props" />
+
+</Project>

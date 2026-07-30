@@ -1,0 +1,1132 @@
+drivers:
+- name: DuckDB Driver
+  description: An ADBC driver for DuckDB developed by the DuckDB Foundation
+  license: MIT
+  path: duckdb
+  urls:
+  - https://duckdb.org/
+  docs_url: https://duckdb.org/docs/stable/clients/adbc
+  pkginfo:
+  - packages:
+    - platform: linux_amd64
+      url: duckdb/v1.4.0/duckdb_linux_amd64_v1.4.0.tar.gz
+    - platform: linux_arm64
+      url: duckdb/v1.4.0/duckdb_linux_arm64_v1.4.0.tar.gz
+    - platform: windows_amd64
+      url: duckdb/v1.4.0/duckdb_windows_amd64_v1.4.0.tar.gz
+    - platform: windows_arm64
+      url: duckdb/v1.4.0/duckdb_windows_arm64_v1.4.0.tar.gz
+    - platform: macos_amd64
+      url: duckdb/v1.4.0/duckdb_macos_amd64_v1.4.0.tar.gz
+    - platform: macos_arm64
+      url: duckdb/v1.4.0/duckdb_macos_arm64_v1.4.0.tar.gz
+    version: v1.4.0
+  - packages:
+    - platform: linux_amd64
+      url: duckdb/v1.4.1/duckdb_linux_amd64_v1.4.1.tar.gz
+    - platform: linux_arm64
+      url: duckdb/v1.4.1/duckdb_linux_arm64_v1.4.1.tar.gz
+    - platform: windows_amd64
+      url: duckdb/v1.4.1/duckdb_windows_amd64_v1.4.1.tar.gz
+    - platform: windows_arm64
+      url: duckdb/v1.4.1/duckdb_windows_arm64_v1.4.1.tar.gz
+    - platform: macos_amd64
+      url: duckdb/v1.4.1/duckdb_macos_amd64_v1.4.1.tar.gz
+    - platform: macos_arm64
+      url: duckdb/v1.4.1/duckdb_macos_arm64_v1.4.1.tar.gz
+    version: v1.4.1
+  - packages:
+    - platform: linux_amd64
+      url: duckdb/v1.4.2/duckdb_linux_amd64_v1.4.2.tar.gz
+    - platform: linux_arm64
+      url: duckdb/v1.4.2/duckdb_linux_arm64_v1.4.2.tar.gz
+    - platform: windows_amd64
+      url: duckdb/v1.4.2/duckdb_windows_amd64_v1.4.2.tar.gz
+    - platform: windows_arm64
+      url: duckdb/v1.4.2/duckdb_windows_arm64_v1.4.2.tar.gz
+    - platform: macos_amd64
+      url: duckdb/v1.4.2/duckdb_macos_amd64_v1.4.2.tar.gz
+    - platform: macos_arm64
+      url: duckdb/v1.4.2/duckdb_macos_arm64_v1.4.2.tar.gz
+    version: v1.4.2
+  - packages:
+    - platform: linux_amd64
+      url: duckdb/v1.4.3/duckdb_linux_amd64_v1.4.3.tar.gz
+    - platform: linux_arm64
+      url: duckdb/v1.4.3/duckdb_linux_arm64_v1.4.3.tar.gz
+    - platform: windows_amd64
+      url: duckdb/v1.4.3/duckdb_windows_amd64_v1.4.3.tar.gz
+    - platform: windows_arm64
+      url: duckdb/v1.4.3/duckdb_windows_arm64_v1.4.3.tar.gz
+    - platform: macos_amd64
+      url: duckdb/v1.4.3/duckdb_macos_amd64_v1.4.3.tar.gz
+    - platform: macos_arm64
+      url: duckdb/v1.4.3/duckdb_macos_arm64_v1.4.3.tar.gz
+    version: v1.4.3
+  - packages:
+    - platform: linux_amd64
+      url: duckdb/v1.4.4/duckdb_linux_amd64_v1.4.4.tar.gz
+    - platform: linux_arm64
+      url: duckdb/v1.4.4/duckdb_linux_arm64_v1.4.4.tar.gz
+    - platform: windows_amd64
+      url: duckdb/v1.4.4/duckdb_windows_amd64_v1.4.4.tar.gz
+    - platform: windows_arm64
+      url: duckdb/v1.4.4/duckdb_windows_arm64_v1.4.4.tar.gz
+    - platform: macos_amd64
+      url: duckdb/v1.4.4/duckdb_macos_amd64_v1.4.4.tar.gz
+    - platform: macos_arm64
+      url: duckdb/v1.4.4/duckdb_macos_arm64_v1.4.4.tar.gz
+    version: v1.4.4
+  - packages:
+    - platform: linux_amd64
+      url: duckdb/v1.5.0/duckdb_linux_amd64_v1.5.0.tar.gz
+    - platform: linux_arm64
+      url: duckdb/v1.5.0/duckdb_linux_arm64_v1.5.0.tar.gz
+    - platform: windows_amd64
+      url: duckdb/v1.5.0/duckdb_windows_amd64_v1.5.0.tar.gz
+    - platform: windows_arm64
+      url: duckdb/v1.5.0/duckdb_windows_arm64_v1.5.0.tar.gz
+    - platform: macos_amd64
+      url: duckdb/v1.5.0/duckdb_macos_amd64_v1.5.0.tar.gz
+    - platform: macos_arm64
+      url: duckdb/v1.5.0/duckdb_macos_arm64_v1.5.0.tar.gz
+    version: v1.5.0
+  - packages:
+    - platform: linux_amd64
+      url: duckdb/v1.5.1/duckdb_linux_amd64_v1.5.1.tar.gz
+    - platform: linux_arm64
+      url: duckdb/v1.5.1/duckdb_linux_arm64_v1.5.1.tar.gz
+    - platform: windows_amd64
+      url: duckdb/v1.5.1/duckdb_windows_amd64_v1.5.1.tar.gz
+    - platform: windows_arm64
+      url: duckdb/v1.5.1/duckdb_windows_arm64_v1.5.1.tar.gz
+    - platform: macos_amd64
+      url: duckdb/v1.5.1/duckdb_macos_amd64_v1.5.1.tar.gz
+    - platform: macos_arm64
+      url: duckdb/v1.5.1/duckdb_macos_arm64_v1.5.1.tar.gz
+    version: v1.5.1
+  - packages:
+    - platform: linux_amd64
+      url: duckdb/v1.5.2/duckdb_linux_amd64_v1.5.2.tar.gz
+    - platform: linux_arm64
+      url: duckdb/v1.5.2/duckdb_linux_arm64_v1.5.2.tar.gz
+    - platform: windows_amd64
+      url: duckdb/v1.5.2/duckdb_windows_amd64_v1.5.2.tar.gz
+    - platform: windows_arm64
+      url: duckdb/v1.5.2/duckdb_windows_arm64_v1.5.2.tar.gz
+    - platform: macos_amd64
+      url: duckdb/v1.5.2/duckdb_macos_amd64_v1.5.2.tar.gz
+    - platform: macos_arm64
+      url: duckdb/v1.5.2/duckdb_macos_arm64_v1.5.2.tar.gz
+    version: v1.5.2
+  - packages:
+    - platform: linux_amd64
+      url: duckdb/v1.5.3/duckdb_linux_amd64_v1.5.3.tar.gz
+    - platform: linux_arm64
+      url: duckdb/v1.5.3/duckdb_linux_arm64_v1.5.3.tar.gz
+    - platform: windows_amd64
+      url: duckdb/v1.5.3/duckdb_windows_amd64_v1.5.3.tar.gz
+    - platform: windows_arm64
+      url: duckdb/v1.5.3/duckdb_windows_arm64_v1.5.3.tar.gz
+    - platform: macos_amd64
+      url: duckdb/v1.5.3/duckdb_macos_amd64_v1.5.3.tar.gz
+    - platform: macos_arm64
+      url: duckdb/v1.5.3/duckdb_macos_arm64_v1.5.3.tar.gz
+    version: v1.5.3
+  - packages:
+    - platform: linux_amd64
+      url: duckdb/v1.5.4/duckdb_linux_amd64_v1.5.4.tar.gz
+    - platform: linux_arm64
+      url: duckdb/v1.5.4/duckdb_linux_arm64_v1.5.4.tar.gz
+    - platform: windows_amd64
+      url: duckdb/v1.5.4/duckdb_windows_amd64_v1.5.4.tar.gz
+    - platform: windows_arm64
+      url: duckdb/v1.5.4/duckdb_windows_arm64_v1.5.4.tar.gz
+    - platform: macos_amd64
+      url: duckdb/v1.5.4/duckdb_macos_amd64_v1.5.4.tar.gz
+    - platform: macos_arm64
+      url: duckdb/v1.5.4/duckdb_macos_arm64_v1.5.4.tar.gz
+    version: v1.5.4
+  - packages:
+    - platform: linux_amd64
+      url: duckdb/v1.4.5/duckdb_linux_amd64_v1.4.5.tar.gz
+    - platform: linux_arm64
+      url: duckdb/v1.4.5/duckdb_linux_arm64_v1.4.5.tar.gz
+    - platform: windows_amd64
+      url: duckdb/v1.4.5/duckdb_windows_amd64_v1.4.5.tar.gz
+    - platform: windows_arm64
+      url: duckdb/v1.4.5/duckdb_windows_arm64_v1.4.5.tar.gz
+    - platform: macos_amd64
+      url: duckdb/v1.4.5/duckdb_macos_amd64_v1.4.5.tar.gz
+    - platform: macos_arm64
+      url: duckdb/v1.4.5/duckdb_macos_arm64_v1.4.5.tar.gz
+    version: v1.4.5
+  - packages:
+    - platform: linux_amd64
+      url: duckdb/v1.5.5/duckdb_linux_amd64_v1.5.5.tar.gz
+    - platform: linux_arm64
+      url: duckdb/v1.5.5/duckdb_linux_arm64_v1.5.5.tar.gz
+    - platform: windows_amd64
+      url: duckdb/v1.5.5/duckdb_windows_amd64_v1.5.5.tar.gz
+    - platform: windows_arm64
+      url: duckdb/v1.5.5/duckdb_windows_arm64_v1.5.5.tar.gz
+    - platform: macos_amd64
+      url: duckdb/v1.5.5/duckdb_macos_amd64_v1.5.5.tar.gz
+    - platform: macos_arm64
+      url: duckdb/v1.5.5/duckdb_macos_arm64_v1.5.5.tar.gz
+    version: v1.5.5
+- name: ASF Apache Arrow Flight SQL Driver
+  description: An ADBC driver for Apache Arrow Flight SQL developed under the 
+    Apache Software Foundation
+  license: Apache-2.0
+  path: flightsql
+  urls:
+  - https://arrow.apache.org/adbc/
+  docs_url: https://arrow.apache.org/adbc/current/driver/flight_sql.html
+  pkginfo:
+  - packages:
+    - platform: macos_amd64
+      url: flightsql/v1.8.0/flightsql_macos_amd64_v1.8.0.tar.gz
+    - platform: macos_arm64
+      url: flightsql/v1.8.0/flightsql_macos_arm64_v1.8.0.tar.gz
+    - platform: linux_amd64
+      url: flightsql/v1.8.0/flightsql_linux_amd64_v1.8.0.tar.gz
+    - platform: linux_arm64
+      url: flightsql/v1.8.0/flightsql_linux_arm64_v1.8.0.tar.gz
+    - platform: windows_amd64
+      url: flightsql/v1.8.0/flightsql_windows_amd64_v1.8.0.tar.gz
+    version: 1.8.0
+  - packages:
+    - platform: macos_amd64
+      url: flightsql/v1.9.0/flightsql_macos_amd64_v1.9.0.tar.gz
+    - platform: macos_arm64
+      url: flightsql/v1.9.0/flightsql_macos_arm64_v1.9.0.tar.gz
+    - platform: linux_amd64
+      url: flightsql/v1.9.0/flightsql_linux_amd64_v1.9.0.tar.gz
+    - platform: linux_arm64
+      url: flightsql/v1.9.0/flightsql_linux_arm64_v1.9.0.tar.gz
+    - platform: windows_amd64
+      url: flightsql/v1.9.0/flightsql_windows_amd64_v1.9.0.tar.gz
+    version: 1.9.0
+  - packages:
+    - platform: macos_amd64
+      url: flightsql/v1.10.0/flightsql_macos_amd64_v1.10.0.tar.gz
+    - platform: macos_arm64
+      url: flightsql/v1.10.0/flightsql_macos_arm64_v1.10.0.tar.gz
+    - platform: linux_amd64
+      url: flightsql/v1.10.0/flightsql_linux_amd64_v1.10.0.tar.gz
+    - platform: linux_arm64
+      url: flightsql/v1.10.0/flightsql_linux_arm64_v1.10.0.tar.gz
+    - platform: windows_amd64
+      url: flightsql/v1.10.0/flightsql_windows_amd64_v1.10.0.tar.gz
+    version: 1.10.0
+  - packages:
+    - platform: macos_amd64
+      url: flightsql/v1.11.0/flightsql_macos_amd64_v1.11.0.tar.gz
+    - platform: macos_arm64
+      url: flightsql/v1.11.0/flightsql_macos_arm64_v1.11.0.tar.gz
+    - platform: linux_amd64
+      url: flightsql/v1.11.0/flightsql_linux_amd64_v1.11.0.tar.gz
+    - platform: linux_arm64
+      url: flightsql/v1.11.0/flightsql_linux_arm64_v1.11.0.tar.gz
+    - platform: windows_amd64
+      url: flightsql/v1.11.0/flightsql_windows_amd64_v1.11.0.tar.gz
+    version: 1.11.0
+  - packages:
+    - platform: macos_amd64
+      url: flightsql/v1.12.0/flightsql_macos_amd64_v1.12.0.tar.gz
+    - platform: macos_arm64
+      url: flightsql/v1.12.0/flightsql_macos_arm64_v1.12.0.tar.gz
+    - platform: linux_amd64
+      url: flightsql/v1.12.0/flightsql_linux_amd64_v1.12.0.tar.gz
+    - platform: linux_arm64
+      url: flightsql/v1.12.0/flightsql_linux_arm64_v1.12.0.tar.gz
+    - platform: windows_amd64
+      url: flightsql/v1.12.0/flightsql_windows_amd64_v1.12.0.tar.gz
+    version: 1.12.0
+- name: ADBC Driver Foundry Driver for MySQL
+  description: An ADBC Driver for MySQL developed by the ADBC Driver Foundry
+  license: Apache-2.0
+  path: mysql
+  urls:
+  - https://adbc-drivers.org
+  docs_url: https://adbc-drivers.org/drivers/mysql/
+  pkginfo:
+  - packages:
+    - platform: linux_amd64
+      url: mysql/v0.1.0/mysql_linux_amd64_v0.1.0.tar.gz
+    - platform: linux_arm64
+      url: mysql/v0.1.0/mysql_linux_arm64_v0.1.0.tar.gz
+    - platform: macos_arm64
+      url: mysql/v0.1.0/mysql_macos_arm64_v0.1.0.tar.gz
+    - platform: windows_amd64
+      url: mysql/v0.1.0/mysql_windows_amd64_v0.1.0.tar.gz
+    version: v0.1.0
+  - packages:
+    - platform: linux_amd64
+      url: mysql/v0.2.0/mysql_linux_amd64_v0.2.0.tar.gz
+    - platform: linux_arm64
+      url: mysql/v0.2.0/mysql_linux_arm64_v0.2.0.tar.gz
+    - platform: macos_arm64
+      url: mysql/v0.2.0/mysql_macos_arm64_v0.2.0.tar.gz
+    - platform: windows_amd64
+      url: mysql/v0.2.0/mysql_windows_amd64_v0.2.0.tar.gz
+    version: v0.2.0
+  - packages:
+    - platform: linux_amd64
+      url: mysql/v0.3.0/mysql_linux_amd64_v0.3.0.tar.gz
+    - platform: linux_arm64
+      url: mysql/v0.3.0/mysql_linux_arm64_v0.3.0.tar.gz
+    - platform: macos_arm64
+      url: mysql/v0.3.0/mysql_macos_arm64_v0.3.0.tar.gz
+    - platform: windows_amd64
+      url: mysql/v0.3.0/mysql_windows_amd64_v0.3.0.tar.gz
+    version: v0.3.0
+  - packages:
+    - platform: linux_amd64
+      url: mysql/v0.3.1/mysql_linux_amd64_v0.3.1.tar.gz
+    - platform: linux_arm64
+      url: mysql/v0.3.1/mysql_linux_arm64_v0.3.1.tar.gz
+    - platform: macos_arm64
+      url: mysql/v0.3.1/mysql_macos_arm64_v0.3.1.tar.gz
+    - platform: windows_amd64
+      url: mysql/v0.3.1/mysql_windows_amd64_v0.3.1.tar.gz
+    version: v0.3.1
+  - packages:
+    - platform: linux_amd64
+      url: mysql/v0.4.0/mysql_linux_amd64_v0.4.0.tar.gz
+    - platform: linux_arm64
+      url: mysql/v0.4.0/mysql_linux_arm64_v0.4.0.tar.gz
+    - platform: macos_arm64
+      url: mysql/v0.4.0/mysql_macos_arm64_v0.4.0.tar.gz
+    - platform: windows_amd64
+      url: mysql/v0.4.0/mysql_windows_amd64_v0.4.0.tar.gz
+    version: v0.4.0
+  - packages:
+    - platform: linux_amd64
+      url: mysql/v0.5.0/mysql_linux_amd64_v0.5.0.tar.gz
+    - platform: linux_arm64
+      url: mysql/v0.5.0/mysql_linux_arm64_v0.5.0.tar.gz
+    - platform: macos_arm64
+      url: mysql/v0.5.0/mysql_macos_arm64_v0.5.0.tar.gz
+    - platform: windows_amd64
+      url: mysql/v0.5.0/mysql_windows_amd64_v0.5.0.tar.gz
+    version: v0.5.0
+- name: ASF SQLite Driver
+  description: An ADBC driver for SQLite developed under the Apache Software 
+    Foundation
+  license: Apache-2.0
+  path: sqlite
+  urls:
+  - https://arrow.apache.org/adbc/
+  docs_url: https://arrow.apache.org/adbc/current/driver/sqlite.html
+  pkginfo:
+  - packages:
+    - platform: macos_amd64
+      url: sqlite/v1.7.0/sqlite_macos_amd64_v1.7.0.tar.gz
+    - platform: macos_arm64
+      url: sqlite/v1.7.0/sqlite_macos_arm64_v1.7.0.tar.gz
+    - platform: linux_arm64
+      url: sqlite/v1.7.0/sqlite_linux_arm64_v1.7.0.tar.gz
+    - platform: linux_amd64
+      url: sqlite/v1.7.0/sqlite_linux_amd64_v1.7.0.tar.gz
+    - platform: windows_amd64
+      url: sqlite/v1.7.0/sqlite_windows_amd64_v1.7.0.tar.gz
+    version: 1.7.0
+  - packages:
+    - platform: macos_amd64
+      url: sqlite/v1.8.0/sqlite_macos_amd64_v1.8.0.tar.gz
+    - platform: macos_arm64
+      url: sqlite/v1.8.0/sqlite_macos_arm64_v1.8.0.tar.gz
+    - platform: linux_arm64
+      url: sqlite/v1.8.0/sqlite_linux_arm64_v1.8.0.tar.gz
+    - platform: linux_amd64
+      url: sqlite/v1.8.0/sqlite_linux_amd64_v1.8.0.tar.gz
+    - platform: windows_amd64
+      url: sqlite/v1.8.0/sqlite_windows_amd64_v1.8.0.tar.gz
+    version: 1.8.0
+  - packages:
+    - platform: macos_amd64
+      url: sqlite/v1.9.0/sqlite_macos_amd64_v1.9.0.tar.gz
+    - platform: macos_arm64
+      url: sqlite/v1.9.0/sqlite_macos_arm64_v1.9.0.tar.gz
+    - platform: linux_arm64
+      url: sqlite/v1.9.0/sqlite_linux_arm64_v1.9.0.tar.gz
+    - platform: linux_amd64
+      url: sqlite/v1.9.0/sqlite_linux_amd64_v1.9.0.tar.gz
+    - platform: windows_amd64
+      url: sqlite/v1.9.0/sqlite_windows_amd64_v1.9.0.tar.gz
+    version: 1.9.0
+  - packages:
+    - platform: macos_amd64
+      url: sqlite/v1.10.0/sqlite_macos_amd64_v1.10.0.tar.gz
+    - platform: macos_arm64
+      url: sqlite/v1.10.0/sqlite_macos_arm64_v1.10.0.tar.gz
+    - platform: linux_arm64
+      url: sqlite/v1.10.0/sqlite_linux_arm64_v1.10.0.tar.gz
+    - platform: linux_amd64
+      url: sqlite/v1.10.0/sqlite_linux_amd64_v1.10.0.tar.gz
+    - platform: windows_amd64
+      url: sqlite/v1.10.0/sqlite_windows_amd64_v1.10.0.tar.gz
+    version: 1.10.0
+  - packages:
+    - platform: macos_amd64
+      url: sqlite/v1.11.0/sqlite_macos_amd64_v1.11.0.tar.gz
+    - platform: macos_arm64
+      url: sqlite/v1.11.0/sqlite_macos_arm64_v1.11.0.tar.gz
+    - platform: linux_arm64
+      url: sqlite/v1.11.0/sqlite_linux_arm64_v1.11.0.tar.gz
+    - platform: linux_amd64
+      url: sqlite/v1.11.0/sqlite_linux_amd64_v1.11.0.tar.gz
+    - platform: windows_amd64
+      url: sqlite/v1.11.0/sqlite_windows_amd64_v1.11.0.tar.gz
+    version: 1.11.0
+  - packages:
+    - platform: macos_amd64
+      url: sqlite/v1.12.0/sqlite_macos_amd64_v1.12.0.tar.gz
+    - platform: macos_arm64
+      url: sqlite/v1.12.0/sqlite_macos_arm64_v1.12.0.tar.gz
+    - platform: linux_arm64
+      url: sqlite/v1.12.0/sqlite_linux_arm64_v1.12.0.tar.gz
+    - platform: linux_amd64
+      url: sqlite/v1.12.0/sqlite_linux_amd64_v1.12.0.tar.gz
+    - platform: windows_amd64
+      url: sqlite/v1.12.0/sqlite_windows_amd64_v1.12.0.tar.gz
+    version: 1.12.0
+- name: ASF PostgreSQL Driver
+  description: An ADBC driver for PostgreSQL developed under the Apache Software
+    Foundation
+  license: Apache-2.0
+  path: postgresql
+  urls:
+  - https://arrow.apache.org/adbc/
+  docs_url: https://arrow.apache.org/adbc/current/driver/postgresql.html
+  pkginfo:
+  - packages:
+    - platform: macos_amd64
+      url: postgresql/v1.8.0/postgresql_macos_amd64_v1.8.0.tar.gz
+    - platform: macos_arm64
+      url: postgresql/v1.8.0/postgresql_macos_arm64_v1.8.0.tar.gz
+    - platform: linux_arm64
+      url: postgresql/v1.8.0/postgresql_linux_arm64_v1.8.0.tar.gz
+    - platform: linux_amd64
+      url: postgresql/v1.8.0/postgresql_linux_amd64_v1.8.0.tar.gz
+    - platform: windows_amd64
+      url: postgresql/v1.8.0/postgresql_windows_amd64_v1.8.0.tar.gz
+    version: 1.8.0
+  - packages:
+    - platform: macos_amd64
+      url: postgresql/v1.9.0/postgresql_macos_amd64_v1.9.0.tar.gz
+    - platform: macos_arm64
+      url: postgresql/v1.9.0/postgresql_macos_arm64_v1.9.0.tar.gz
+    - platform: linux_arm64
+      url: postgresql/v1.9.0/postgresql_linux_arm64_v1.9.0.tar.gz
+    - platform: linux_amd64
+      url: postgresql/v1.9.0/postgresql_linux_amd64_v1.9.0.tar.gz
+    - platform: windows_amd64
+      url: postgresql/v1.9.0/postgresql_windows_amd64_v1.9.0.tar.gz
+    version: 1.9.0
+  - packages:
+    - platform: macos_amd64
+      url: postgresql/v1.10.0/postgresql_macos_amd64_v1.10.0.tar.gz
+    - platform: macos_arm64
+      url: postgresql/v1.10.0/postgresql_macos_arm64_v1.10.0.tar.gz
+    - platform: linux_arm64
+      url: postgresql/v1.10.0/postgresql_linux_arm64_v1.10.0.tar.gz
+    - platform: linux_amd64
+      url: postgresql/v1.10.0/postgresql_linux_amd64_v1.10.0.tar.gz
+    - platform: windows_amd64
+      url: postgresql/v1.10.0/postgresql_windows_amd64_v1.10.0.tar.gz
+    version: 1.10.0
+  - packages:
+    - platform: macos_amd64
+      url: postgresql/v1.11.0/postgresql_macos_amd64_v1.11.0.tar.gz
+    - platform: macos_arm64
+      url: postgresql/v1.11.0/postgresql_macos_arm64_v1.11.0.tar.gz
+    - platform: linux_arm64
+      url: postgresql/v1.11.0/postgresql_linux_arm64_v1.11.0.tar.gz
+    - platform: linux_amd64
+      url: postgresql/v1.11.0/postgresql_linux_amd64_v1.11.0.tar.gz
+    - platform: windows_amd64
+      url: postgresql/v1.11.0/postgresql_windows_amd64_v1.11.0.tar.gz
+    version: 1.11.0
+  - packages:
+    - platform: macos_amd64
+      url: postgresql/v1.12.0/postgresql_macos_amd64_v1.12.0.tar.gz
+    - platform: macos_arm64
+      url: postgresql/v1.12.0/postgresql_macos_arm64_v1.12.0.tar.gz
+    - platform: linux_arm64
+      url: postgresql/v1.12.0/postgresql_linux_arm64_v1.12.0.tar.gz
+    - platform: linux_amd64
+      url: postgresql/v1.12.0/postgresql_linux_amd64_v1.12.0.tar.gz
+    - platform: windows_amd64
+      url: postgresql/v1.12.0/postgresql_windows_amd64_v1.12.0.tar.gz
+    version: 1.12.0
+- name: Columnar Microsoft SQL Server Driver
+  description: An ADBC driver for Microsoft SQL Server developed by Columnar
+  license: LicenseRef-PBL
+  path: mssql
+  urls:
+  - https://adbc-drivers.org
+  docs_url: https://adbc-drivers.org/drivers/mssql/
+  pkginfo:
+  - packages:
+    - platform: linux_amd64
+      url: mssql/v1.0.0/mssql_linux_amd64_v1.0.0.tar.gz
+    - platform: linux_arm64
+      url: mssql/v1.0.0/mssql_linux_arm64_v1.0.0.tar.gz
+    - platform: macos_arm64
+      url: mssql/v1.0.0/mssql_macos_arm64_v1.0.0.tar.gz
+    - platform: windows_amd64
+      url: mssql/v1.0.0/mssql_windows_amd64_v1.0.0.tar.gz
+    version: v1.0.0
+  - packages:
+    - platform: linux_amd64
+      url: mssql/v1.1.0/mssql_linux_amd64_v1.1.0.tar.gz
+    - platform: linux_arm64
+      url: mssql/v1.1.0/mssql_linux_arm64_v1.1.0.tar.gz
+    - platform: macos_arm64
+      url: mssql/v1.1.0/mssql_macos_arm64_v1.1.0.tar.gz
+    - platform: windows_amd64
+      url: mssql/v1.1.0/mssql_windows_amd64_v1.1.0.tar.gz
+    version: v1.1.0
+  - packages:
+    - platform: linux_amd64
+      url: mssql/v1.2.0/mssql_linux_amd64_v1.2.0.tar.gz
+    - platform: linux_arm64
+      url: mssql/v1.2.0/mssql_linux_arm64_v1.2.0.tar.gz
+    - platform: macos_arm64
+      url: mssql/v1.2.0/mssql_macos_arm64_v1.2.0.tar.gz
+    - platform: windows_amd64
+      url: mssql/v1.2.0/mssql_windows_amd64_v1.2.0.tar.gz
+    version: v1.2.0
+  - packages:
+    - platform: linux_amd64
+      url: mssql/v1.3.0/mssql_linux_amd64_v1.3.0.tar.gz
+    - platform: linux_arm64
+      url: mssql/v1.3.0/mssql_linux_arm64_v1.3.0.tar.gz
+    - platform: macos_arm64
+      url: mssql/v1.3.0/mssql_macos_arm64_v1.3.0.tar.gz
+    - platform: windows_amd64
+      url: mssql/v1.3.0/mssql_windows_amd64_v1.3.0.tar.gz
+    version: v1.3.0
+  - packages:
+    - platform: linux_amd64
+      url: mssql/v1.3.1/mssql_linux_amd64_v1.3.1.tar.gz
+    - platform: linux_arm64
+      url: mssql/v1.3.1/mssql_linux_arm64_v1.3.1.tar.gz
+    - platform: macos_arm64
+      url: mssql/v1.3.1/mssql_macos_arm64_v1.3.1.tar.gz
+    - platform: windows_amd64
+      url: mssql/v1.3.1/mssql_windows_amd64_v1.3.1.tar.gz
+    version: v1.3.1
+  - packages:
+    - platform: linux_amd64
+      url: mssql/v1.4.0-alpha.1/mssql_linux_amd64_v1.4.0-alpha.1.tar.gz
+    - platform: linux_arm64
+      url: mssql/v1.4.0-alpha.1/mssql_linux_arm64_v1.4.0-alpha.1.tar.gz
+    - platform: macos_arm64
+      url: mssql/v1.4.0-alpha.1/mssql_macos_arm64_v1.4.0-alpha.1.tar.gz
+    - platform: windows_amd64
+      url: mssql/v1.4.0-alpha.1/mssql_windows_amd64_v1.4.0-alpha.1.tar.gz
+    version: v1.4.0-alpha.1
+  - packages:
+    - platform: linux_amd64
+      url: mssql/v1.4.0/mssql_linux_amd64_v1.4.0.tar.gz
+    - platform: linux_arm64
+      url: mssql/v1.4.0/mssql_linux_arm64_v1.4.0.tar.gz
+    - platform: macos_arm64
+      url: mssql/v1.4.0/mssql_macos_arm64_v1.4.0.tar.gz
+    - platform: windows_amd64
+      url: mssql/v1.4.0/mssql_windows_amd64_v1.4.0.tar.gz
+    version: v1.4.0
+  - packages:
+    - platform: linux_amd64
+      url: mssql/v1.4.1/mssql_linux_amd64_v1.4.1.tar.gz
+    - platform: linux_arm64
+      url: mssql/v1.4.1/mssql_linux_arm64_v1.4.1.tar.gz
+    - platform: macos_arm64
+      url: mssql/v1.4.1/mssql_macos_arm64_v1.4.1.tar.gz
+    - platform: windows_amd64
+      url: mssql/v1.4.1/mssql_windows_amd64_v1.4.1.tar.gz
+    version: v1.4.1
+  - packages:
+    - platform: linux_amd64
+      url: mssql/v1.4.2-beta.1/mssql_linux_amd64_v1.4.2-beta.1.tar.gz
+    - platform: linux_arm64
+      url: mssql/v1.4.2-beta.1/mssql_linux_arm64_v1.4.2-beta.1.tar.gz
+    - platform: macos_arm64
+      url: mssql/v1.4.2-beta.1/mssql_macos_arm64_v1.4.2-beta.1.tar.gz
+    - platform: windows_amd64
+      url: mssql/v1.4.2-beta.1/mssql_windows_amd64_v1.4.2-beta.1.tar.gz
+    version: v1.4.2-beta.1
+  - packages:
+    - platform: linux_amd64
+      url: mssql/v1.5.0/mssql_linux_amd64_v1.5.0.tar.gz
+    - platform: linux_arm64
+      url: mssql/v1.5.0/mssql_linux_arm64_v1.5.0.tar.gz
+    - platform: macos_arm64
+      url: mssql/v1.5.0/mssql_macos_arm64_v1.5.0.tar.gz
+    - platform: windows_amd64
+      url: mssql/v1.5.0/mssql_windows_amd64_v1.5.0.tar.gz
+    version: v1.5.0
+- name: Columnar ADBC Driver for Amazon Redshift
+  description: An ADBC driver for Amazon Redshift developed by Columnar
+  license: LicenseRef-PBL
+  path: redshift
+  urls:
+  - https://adbc-drivers.org
+  docs_url: https://adbc-drivers.org/drivers/redshift/
+  pkginfo:
+  - packages:
+    - platform: linux_amd64
+      url: redshift/v1.0.0/redshift_linux_amd64_v1.0.0.tar.gz
+    - platform: linux_arm64
+      url: redshift/v1.0.0/redshift_linux_arm64_v1.0.0.tar.gz
+    - platform: macos_arm64
+      url: redshift/v1.0.0/redshift_macos_arm64_v1.0.0.tar.gz
+    - platform: windows_amd64
+      url: redshift/v1.0.0/redshift_windows_amd64_v1.0.0.tar.gz
+    version: v1.0.0
+  - packages:
+    - platform: linux_amd64
+      url: redshift/v1.1.0/redshift_linux_amd64_v1.1.0.tar.gz
+    - platform: linux_arm64
+      url: redshift/v1.1.0/redshift_linux_arm64_v1.1.0.tar.gz
+    - platform: macos_arm64
+      url: redshift/v1.1.0/redshift_macos_arm64_v1.1.0.tar.gz
+    - platform: windows_amd64
+      url: redshift/v1.1.0/redshift_windows_amd64_v1.1.0.tar.gz
+    version: v1.1.0
+  - packages:
+    - platform: linux_amd64
+      url: redshift/v1.2.1/redshift_linux_amd64_v1.2.1.tar.gz
+    - platform: linux_arm64
+      url: redshift/v1.2.1/redshift_linux_arm64_v1.2.1.tar.gz
+    - platform: macos_arm64
+      url: redshift/v1.2.1/redshift_macos_arm64_v1.2.1.tar.gz
+    - platform: windows_amd64
+      url: redshift/v1.2.1/redshift_windows_amd64_v1.2.1.tar.gz
+    version: v1.2.1
+  - packages:
+    - platform: linux_amd64
+      url: redshift/v1.3.0/redshift_linux_amd64_v1.3.0.tar.gz
+    - platform: linux_arm64
+      url: redshift/v1.3.0/redshift_linux_arm64_v1.3.0.tar.gz
+    - platform: macos_arm64
+      url: redshift/v1.3.0/redshift_macos_arm64_v1.3.0.tar.gz
+    - platform: windows_amd64
+      url: redshift/v1.3.0/redshift_windows_amd64_v1.3.0.tar.gz
+    version: v1.3.0
+  - packages:
+    - platform: linux_amd64
+      url: redshift/v1.4.0/redshift_linux_amd64_v1.4.0.tar.gz
+    - platform: linux_arm64
+      url: redshift/v1.4.0/redshift_linux_arm64_v1.4.0.tar.gz
+    - platform: macos_arm64
+      url: redshift/v1.4.0/redshift_macos_arm64_v1.4.0.tar.gz
+    - platform: windows_amd64
+      url: redshift/v1.4.0/redshift_windows_amd64_v1.4.0.tar.gz
+    version: v1.4.0
+- name: ADBC Driver Foundry Driver for Google BigQuery
+  description: An ADBC driver for Google BigQuery developed by the ADBC Driver 
+    Foundry
+  license: Apache-2.0
+  path: bigquery
+  urls:
+  - https://adbc-drivers.org
+  docs_url: https://adbc-drivers.org/drivers/bigquery/
+  pkginfo:
+  - packages:
+    - platform: linux_amd64
+      url: bigquery/v1.0.0/bigquery_linux_amd64_v1.0.0.tar.gz
+    - platform: linux_arm64
+      url: bigquery/v1.0.0/bigquery_linux_arm64_v1.0.0.tar.gz
+    - platform: macos_arm64
+      url: bigquery/v1.0.0/bigquery_macos_arm64_v1.0.0.tar.gz
+    - platform: windows_amd64
+      url: bigquery/v1.0.0/bigquery_windows_amd64_v1.0.0.tar.gz
+    version: v1.0.0
+  - packages:
+    - platform: linux_amd64
+      url: bigquery/v1.10.0/bigquery_linux_amd64_v1.10.0.tar.gz
+    - platform: linux_arm64
+      url: bigquery/v1.10.0/bigquery_linux_arm64_v1.10.0.tar.gz
+    - platform: macos_arm64
+      url: bigquery/v1.10.0/bigquery_macos_arm64_v1.10.0.tar.gz
+    - platform: windows_amd64
+      url: bigquery/v1.10.0/bigquery_windows_amd64_v1.10.0.tar.gz
+    version: v1.10.0
+  - packages:
+    - platform: linux_amd64
+      url: bigquery/v1.11.0/bigquery_linux_amd64_v1.11.0.tar.gz
+    - platform: linux_arm64
+      url: bigquery/v1.11.0/bigquery_linux_arm64_v1.11.0.tar.gz
+    - platform: macos_arm64
+      url: bigquery/v1.11.0/bigquery_macos_arm64_v1.11.0.tar.gz
+    - platform: windows_amd64
+      url: bigquery/v1.11.0/bigquery_windows_amd64_v1.11.0.tar.gz
+    version: v1.11.0
+  - packages:
+    - platform: linux_amd64
+      url: bigquery/v1.11.2/bigquery_linux_amd64_v1.11.2.tar.gz
+    - platform: linux_arm64
+      url: bigquery/v1.11.2/bigquery_linux_arm64_v1.11.2.tar.gz
+    - platform: macos_arm64
+      url: bigquery/v1.11.2/bigquery_macos_arm64_v1.11.2.tar.gz
+    - platform: windows_amd64
+      url: bigquery/v1.11.2/bigquery_windows_amd64_v1.11.2.tar.gz
+    version: v1.11.2
+  - packages:
+    - platform: linux_amd64
+      url: bigquery/v1.12.0/bigquery_linux_amd64_v1.12.0.tar.gz
+    - platform: linux_arm64
+      url: bigquery/v1.12.0/bigquery_linux_arm64_v1.12.0.tar.gz
+    - platform: macos_arm64
+      url: bigquery/v1.12.0/bigquery_macos_arm64_v1.12.0.tar.gz
+    - platform: windows_amd64
+      url: bigquery/v1.12.0/bigquery_windows_amd64_v1.12.0.tar.gz
+    version: v1.12.0
+  - packages:
+    - platform: linux_amd64
+      url: bigquery/v1.12.1/bigquery_linux_amd64_v1.12.1.tar.gz
+    - platform: linux_arm64
+      url: bigquery/v1.12.1/bigquery_linux_arm64_v1.12.1.tar.gz
+    - platform: macos_arm64
+      url: bigquery/v1.12.1/bigquery_macos_arm64_v1.12.1.tar.gz
+    - platform: windows_amd64
+      url: bigquery/v1.12.1/bigquery_windows_amd64_v1.12.1.tar.gz
+    version: v1.12.1
+- name: ASF Snowflake Driver
+  description: An ADBC driver for Snowflake developed under the Apache Software 
+    Foundation
+  license: Apache-2.0
+  path: snowflake
+  urls:
+  - https://arrow.apache.org/adbc/
+  docs_url: https://adbc-drivers.org/drivers/snowflake/
+  pkginfo:
+  - packages:
+    - platform: macos_amd64
+      url: snowflake/v1.8.0/snowflake_macos_amd64_v1.8.0.tar.gz
+    - platform: macos_arm64
+      url: snowflake/v1.8.0/snowflake_macos_arm64_v1.8.0.tar.gz
+    - platform: linux_amd64
+      url: snowflake/v1.8.0/snowflake_linux_amd64_v1.8.0.tar.gz
+    - platform: linux_arm64
+      url: snowflake/v1.8.0/snowflake_linux_arm64_v1.8.0.tar.gz
+    - platform: windows_amd64
+      url: snowflake/v1.8.0/snowflake_windows_amd64_v1.8.0.tar.gz
+    version: 1.8.0
+  - packages:
+    - platform: macos_amd64
+      url: snowflake/v1.9.0/snowflake_macos_amd64_v1.9.0.tar.gz
+    - platform: macos_arm64
+      url: snowflake/v1.9.0/snowflake_macos_arm64_v1.9.0.tar.gz
+    - platform: linux_amd64
+      url: snowflake/v1.9.0/snowflake_linux_amd64_v1.9.0.tar.gz
+    - platform: linux_arm64
+      url: snowflake/v1.9.0/snowflake_linux_arm64_v1.9.0.tar.gz
+    - platform: windows_amd64
+      url: snowflake/v1.9.0/snowflake_windows_amd64_v1.9.0.tar.gz
+    version: 1.9.0
+  - packages:
+    - platform: linux_amd64
+      url: snowflake/v1.10.0/snowflake_linux_amd64_v1.10.0.tar.gz
+    - platform: linux_arm64
+      url: snowflake/v1.10.0/snowflake_linux_arm64_v1.10.0.tar.gz
+    - platform: macos_arm64
+      url: snowflake/v1.10.0/snowflake_macos_arm64_v1.10.0.tar.gz
+    - platform: windows_amd64
+      url: snowflake/v1.10.0/snowflake_windows_amd64_v1.10.0.tar.gz
+    version: v1.10.0
+  - packages:
+    - platform: linux_amd64
+      url: snowflake/v1.10.1/snowflake_linux_amd64_v1.10.1.tar.gz
+    - platform: linux_arm64
+      url: snowflake/v1.10.1/snowflake_linux_arm64_v1.10.1.tar.gz
+    - platform: macos_arm64
+      url: snowflake/v1.10.1/snowflake_macos_arm64_v1.10.1.tar.gz
+    - platform: windows_amd64
+      url: snowflake/v1.10.1/snowflake_windows_amd64_v1.10.1.tar.gz
+    version: v1.10.1
+  - packages:
+    - platform: linux_amd64
+      url: snowflake/v1.10.3/snowflake_linux_amd64_v1.10.3.tar.gz
+    - platform: linux_arm64
+      url: snowflake/v1.10.3/snowflake_linux_arm64_v1.10.3.tar.gz
+    - platform: macos_arm64
+      url: snowflake/v1.10.3/snowflake_macos_arm64_v1.10.3.tar.gz
+    - platform: windows_amd64
+      url: snowflake/v1.10.3/snowflake_windows_amd64_v1.10.3.tar.gz
+    version: v1.10.3
+  - packages:
+    - platform: linux_amd64
+      url: snowflake/v1.11.0/snowflake_linux_amd64_v1.11.0.tar.gz
+    - platform: linux_arm64
+      url: snowflake/v1.11.0/snowflake_linux_arm64_v1.11.0.tar.gz
+    - platform: macos_arm64
+      url: snowflake/v1.11.0/snowflake_macos_arm64_v1.11.0.tar.gz
+    - platform: windows_amd64
+      url: snowflake/v1.11.0/snowflake_windows_amd64_v1.11.0.tar.gz
+    version: v1.11.0
+- name: ADBC Driver Foundry Driver for Trino
+  description: An ADBC Driver for Trino developed by the ADBC Driver Foundry
+  license: Apache-2.0
+  path: trino
+  urls:
+  - https://adbc-drivers.org
+  docs_url: https://adbc-drivers.org/drivers/trino/
+  pkginfo:
+  - packages:
+    - platform: linux_amd64
+      url: trino/v0.1.0/trino_linux_amd64_v0.1.0.tar.gz
+    - platform: linux_arm64
+      url: trino/v0.1.0/trino_linux_arm64_v0.1.0.tar.gz
+    - platform: macos_arm64
+      url: trino/v0.1.0/trino_macos_arm64_v0.1.0.tar.gz
+    - platform: windows_amd64
+      url: trino/v0.1.0/trino_windows_amd64_v0.1.0.tar.gz
+    version: v0.1.0
+  - packages:
+    - platform: linux_amd64
+      url: trino/v0.2.0/trino_linux_amd64_v0.2.0.tar.gz
+    - platform: linux_arm64
+      url: trino/v0.2.0/trino_linux_arm64_v0.2.0.tar.gz
+    - platform: macos_arm64
+      url: trino/v0.2.0/trino_macos_arm64_v0.2.0.tar.gz
+    - platform: windows_amd64
+      url: trino/v0.2.0/trino_windows_amd64_v0.2.0.tar.gz
+    version: v0.2.0
+  - packages:
+    - platform: linux_amd64
+      url: trino/v0.3.0/trino_linux_amd64_v0.3.0.tar.gz
+    - platform: linux_arm64
+      url: trino/v0.3.0/trino_linux_arm64_v0.3.0.tar.gz
+    - platform: macos_arm64
+      url: trino/v0.3.0/trino_macos_arm64_v0.3.0.tar.gz
+    - platform: windows_amd64
+      url: trino/v0.3.0/trino_windows_amd64_v0.3.0.tar.gz
+    version: v0.3.0
+  - packages:
+    - platform: linux_amd64
+      url: trino/v0.3.1/trino_linux_amd64_v0.3.1.tar.gz
+    - platform: linux_arm64
+      url: trino/v0.3.1/trino_linux_arm64_v0.3.1.tar.gz
+    - platform: macos_arm64
+      url: trino/v0.3.1/trino_macos_arm64_v0.3.1.tar.gz
+    - platform: windows_amd64
+      url: trino/v0.3.1/trino_windows_amd64_v0.3.1.tar.gz
+    version: v0.3.1
+  - packages:
+    - platform: linux_amd64
+      url: trino/v0.4.0/trino_linux_amd64_v0.4.0.tar.gz
+    - platform: linux_arm64
+      url: trino/v0.4.0/trino_linux_arm64_v0.4.0.tar.gz
+    - platform: macos_arm64
+      url: trino/v0.4.0/trino_macos_arm64_v0.4.0.tar.gz
+    - platform: windows_amd64
+      url: trino/v0.4.0/trino_windows_amd64_v0.4.0.tar.gz
+    version: v0.4.0
+  - packages:
+    - platform: linux_amd64
+      url: trino/v0.5.0/trino_linux_amd64_v0.5.0.tar.gz
+    - platform: linux_arm64
+      url: trino/v0.5.0/trino_linux_arm64_v0.5.0.tar.gz
+    - platform: macos_arm64
+      url: trino/v0.5.0/trino_macos_arm64_v0.5.0.tar.gz
+    - platform: windows_amd64
+      url: trino/v0.5.0/trino_windows_amd64_v0.5.0.tar.gz
+    version: v0.5.0
+- name: ADBC Driver Foundry Driver for Databricks
+  description: An ADBC Driver for Databricks developed by the ADBC Driver 
+    Foundry
+  license: Apache-2.0
+  path: databricks
+  urls:
+  - https://adbc-drivers.org
+  docs_url: https://adbc-drivers.org/drivers/databricks/
+  pkginfo:
+  - packages:
+    - platform: linux_amd64
+      url: databricks/v0.1.2/databricks_linux_amd64_v0.1.2.tar.gz
+    - platform: linux_arm64
+      url: databricks/v0.1.2/databricks_linux_arm64_v0.1.2.tar.gz
+    - platform: macos_arm64
+      url: databricks/v0.1.2/databricks_macos_arm64_v0.1.2.tar.gz
+    - platform: windows_amd64
+      url: databricks/v0.1.2/databricks_windows_amd64_v0.1.2.tar.gz
+    version: v0.1.2
+  - packages:
+    - platform: linux_amd64
+      url: databricks/v0.1.3/databricks_linux_amd64_v0.1.3.tar.gz
+    - platform: linux_arm64
+      url: databricks/v0.1.3/databricks_linux_arm64_v0.1.3.tar.gz
+    - platform: macos_arm64
+      url: databricks/v0.1.3/databricks_macos_arm64_v0.1.3.tar.gz
+    - platform: windows_amd64
+      url: databricks/v0.1.3/databricks_windows_amd64_v0.1.3.tar.gz
+    version: v0.1.3
+- name: ClickHouse Driver
+  description: An ADBC driver for ClickHouse developed by ClickHouse, Inc.
+  license: MIT OR Apache-2.0
+  path: clickhouse
+  urls:
+  - https://adbc-drivers.org
+  pkginfo:
+  - packages:
+    - platform: linux_amd64
+      url: 
+        clickhouse/v0.1.0-alpha.1/clickhouse_linux_amd64_v0.1.0-alpha.1.tar.gz
+    - platform: linux_arm64
+      url: 
+        clickhouse/v0.1.0-alpha.1/clickhouse_linux_arm64_v0.1.0-alpha.1.tar.gz
+    - platform: macos_arm64
+      url: 
+        clickhouse/v0.1.0-alpha.1/clickhouse_macos_arm64_v0.1.0-alpha.1.tar.gz
+    - platform: windows_amd64
+      url: 
+        clickhouse/v0.1.0-alpha.1/clickhouse_windows_amd64_v0.1.0-alpha.1.tar.gz
+    version: v0.1.0-alpha.1
+  - packages:
+    - platform: linux_amd64
+      url: 
+        clickhouse/v0.1.0-alpha.2/clickhouse_linux_amd64_v0.1.0-alpha.2.tar.gz
+    - platform: linux_arm64
+      url: 
+        clickhouse/v0.1.0-alpha.2/clickhouse_linux_arm64_v0.1.0-alpha.2.tar.gz
+    - platform: macos_arm64
+      url: 
+        clickhouse/v0.1.0-alpha.2/clickhouse_macos_arm64_v0.1.0-alpha.2.tar.gz
+    - platform: windows_amd64
+      url: 
+        clickhouse/v0.1.0-alpha.2/clickhouse_windows_amd64_v0.1.0-alpha.2.tar.gz
+    version: v0.1.0-alpha.2
+  - packages:
+    - platform: linux_amd64
+      url: clickhouse/v0.1.0/clickhouse_linux_amd64_v0.1.0.tar.gz
+    - platform: linux_arm64
+      url: clickhouse/v0.1.0/clickhouse_linux_arm64_v0.1.0.tar.gz
+    - platform: macos_arm64
+      url: clickhouse/v0.1.0/clickhouse_macos_arm64_v0.1.0.tar.gz
+    - platform: windows_amd64
+      url: clickhouse/v0.1.0/clickhouse_windows_amd64_v0.1.0.tar.gz
+    version: v0.1.0
+  docs_url: https://adbc-drivers.org/drivers/clickhouse/
+- name: Exasol Driver
+  description: An ADBC driver for Exasol developed by Exasol Labs
+  license: MIT
+  path: exasol
+  urls:
+  - https://adbc-drivers.org
+  pkginfo:
+  - packages:
+    - platform: linux_amd64
+      url: exasol/v0.6.3/exasol_linux_amd64_v0.6.3.tar.gz
+    - platform: linux_arm64
+      url: exasol/v0.6.3/exasol_linux_arm64_v0.6.3.tar.gz
+    - platform: macos_arm64
+      url: exasol/v0.6.3/exasol_macos_arm64_v0.6.3.tar.gz
+    - platform: windows_amd64
+      url: exasol/v0.6.3/exasol_windows_amd64_v0.6.3.tar.gz
+    version: v0.6.3
+  - packages:
+    - platform: linux_amd64
+      url: exasol/v0.7.0/exasol_linux_amd64_v0.7.0.tar.gz
+    - platform: linux_arm64
+      url: exasol/v0.7.0/exasol_linux_arm64_v0.7.0.tar.gz
+    - platform: macos_arm64
+      url: exasol/v0.7.0/exasol_macos_arm64_v0.7.0.tar.gz
+    - platform: windows_amd64
+      url: exasol/v0.7.0/exasol_windows_amd64_v0.7.0.tar.gz
+    version: v0.7.0
+  - packages:
+    - platform: linux_amd64
+      url: exasol/v0.9.0/exasol_linux_amd64_v0.9.0.tar.gz
+    - platform: linux_arm64
+      url: exasol/v0.9.0/exasol_linux_arm64_v0.9.0.tar.gz
+    - platform: macos_arm64
+      url: exasol/v0.9.0/exasol_macos_arm64_v0.9.0.tar.gz
+    - platform: windows_amd64
+      url: exasol/v0.9.0/exasol_windows_amd64_v0.9.0.tar.gz
+    version: v0.9.0
+  - packages:
+    - platform: linux_amd64
+      url: exasol/v0.12.0/exasol_linux_amd64_v0.12.0.tar.gz
+    - platform: linux_arm64
+      url: exasol/v0.12.0/exasol_linux_arm64_v0.12.0.tar.gz
+    - platform: macos_arm64
+      url: exasol/v0.12.0/exasol_macos_arm64_v0.12.0.tar.gz
+    - platform: windows_amd64
+      url: exasol/v0.12.0/exasol_windows_amd64_v0.12.0.tar.gz
+    version: v0.12.0
+  - packages:
+    - platform: linux_amd64
+      url: exasol/v0.12.6/exasol_linux_amd64_v0.12.6.tar.gz
+    - platform: linux_arm64
+      url: exasol/v0.12.6/exasol_linux_arm64_v0.12.6.tar.gz
+    - platform: macos_arm64
+      url: exasol/v0.12.6/exasol_macos_arm64_v0.12.6.tar.gz
+    - platform: windows_amd64
+      url: exasol/v0.12.6/exasol_windows_amd64_v0.12.6.tar.gz
+    version: v0.12.6
+  - packages:
+    - platform: linux_amd64
+      url: exasol/v0.12.7/exasol_linux_amd64_v0.12.7.tar.gz
+    - platform: linux_arm64
+      url: exasol/v0.12.7/exasol_linux_arm64_v0.12.7.tar.gz
+    - platform: macos_arm64
+      url: exasol/v0.12.7/exasol_macos_arm64_v0.12.7.tar.gz
+    - platform: windows_amd64
+      url: exasol/v0.12.7/exasol_windows_amd64_v0.12.7.tar.gz
+    version: v0.12.7
+  - packages:
+    - platform: linux_amd64
+      url: exasol/v0.13.0/exasol_linux_amd64_v0.13.0.tar.gz
+    - platform: linux_arm64
+      url: exasol/v0.13.0/exasol_linux_arm64_v0.13.0.tar.gz
+    - platform: macos_arm64
+      url: exasol/v0.13.0/exasol_macos_arm64_v0.13.0.tar.gz
+    - platform: windows_amd64
+      url: exasol/v0.13.0/exasol_windows_amd64_v0.13.0.tar.gz
+    version: v0.13.0
+  docs_url: https://adbc-drivers.org/drivers/exasol/
+- name: SingleStore Driver
+  description: An ADBC driver for SingleStore developed by SingleStore
+  license: Apache-2.0
+  path: singlestore
+  urls:
+  - https://adbc-drivers.org
+  pkginfo:
+  - packages:
+    - platform: linux_amd64
+      url: 
+        singlestore/v0.1.0-beta.1/singlestore_linux_amd64_v0.1.0-beta.1.tar.gz
+    - platform: linux_arm64
+      url: 
+        singlestore/v0.1.0-beta.1/singlestore_linux_arm64_v0.1.0-beta.1.tar.gz
+    - platform: macos_arm64
+      url: 
+        singlestore/v0.1.0-beta.1/singlestore_macos_arm64_v0.1.0-beta.1.tar.gz
+    - platform: windows_amd64
+      url: 
+        singlestore/v0.1.0-beta.1/singlestore_windows_amd64_v0.1.0-beta.1.tar.gz
+    version: v0.1.0-beta.1
+  docs_url: https://adbc-drivers.org/drivers/singlestore/
+
+- name: ADBC Driver for DuckDB Quack
+  description: An ADBC driver for remote DuckDB via Quack
+  license: Apache-2.0
+  path: quack
+  urls:
+  - https://adbc-drivers.org
+  pkginfo:
+  - packages:
+    - platform: linux_amd64
+      url: quack/v0.1.0-alpha.1/quack_linux_amd64_v0.1.0-alpha.1.tar.gz
+    - platform: linux_arm64
+      url: quack/v0.1.0-alpha.1/quack_linux_arm64_v0.1.0-alpha.1.tar.gz
+    - platform: macos_arm64
+      url: quack/v0.1.0-alpha.1/quack_macos_arm64_v0.1.0-alpha.1.tar.gz
+    - platform: windows_amd64
+      url: quack/v0.1.0-alpha.1/quack_windows_amd64_v0.1.0-alpha.1.tar.gz
+    version: v0.1.0-alpha.1
+  - packages:
+    - platform: linux_amd64
+      url: quack/v0.1.0-alpha.2/quack_linux_amd64_v0.1.0-alpha.2.tar.gz
+    - platform: linux_arm64
+      url: quack/v0.1.0-alpha.2/quack_linux_arm64_v0.1.0-alpha.2.tar.gz
+    - platform: macos_arm64
+      url: quack/v0.1.0-alpha.2/quack_macos_arm64_v0.1.0-alpha.2.tar.gz
+    - platform: windows_amd64
+      url: quack/v0.1.0-alpha.2/quack_windows_amd64_v0.1.0-alpha.2.tar.gz
+    version: v0.1.0-alpha.2
+  - packages:
+    - platform: linux_amd64
+      url: quack/v0.1.0-alpha.3/quack_linux_amd64_v0.1.0-alpha.3.tar.gz
+    - platform: linux_arm64
+      url: quack/v0.1.0-alpha.3/quack_linux_arm64_v0.1.0-alpha.3.tar.gz
+    - platform: macos_arm64
+      url: quack/v0.1.0-alpha.3/quack_macos_arm64_v0.1.0-alpha.3.tar.gz
+    - platform: windows_amd64
+      url: quack/v0.1.0-alpha.3/quack_windows_amd64_v0.1.0-alpha.3.tar.gz
+    version: v0.1.0-alpha.3
+  docs_url: https://adbc-drivers.org/drivers/quack/
+- name: ADBC Driver Foundry Driver for Apache DataFusion
+  description: An ADBC driver for Apache DataFusion developed by the ADBC Driver
+    Foundry
+  license: Apache-2.0
+  path: datafusion
+  urls:
+  - https://adbc-drivers.org
+  pkginfo:
+  - packages:
+    - platform: linux_amd64
+      url: datafusion/v0.24.1/datafusion_linux_amd64_v0.24.1.tar.gz
+    - platform: linux_arm64
+      url: datafusion/v0.24.1/datafusion_linux_arm64_v0.24.1.tar.gz
+    - platform: macos_arm64
+      url: datafusion/v0.24.1/datafusion_macos_arm64_v0.24.1.tar.gz
+    - platform: windows_amd64
+      url: datafusion/v0.24.1/datafusion_windows_amd64_v0.24.1.tar.gz
+    version: v0.24.1
+  - packages:
+    - platform: linux_amd64
+      url: datafusion/v0.25.0/datafusion_linux_amd64_v0.25.0.tar.gz
+    - platform: linux_arm64
+      url: datafusion/v0.25.0/datafusion_linux_arm64_v0.25.0.tar.gz
+    - platform: macos_arm64
+      url: datafusion/v0.25.0/datafusion_macos_arm64_v0.25.0.tar.gz
+    - platform: windows_amd64
+      url: datafusion/v0.25.0/datafusion_windows_amd64_v0.25.0.tar.gz
+    version: v0.25.0
+  - packages:
+    - platform: linux_amd64
+      url: datafusion/v0.26.0/datafusion_linux_amd64_v0.26.0.tar.gz
+    - platform: linux_arm64
+      url: datafusion/v0.26.0/datafusion_linux_arm64_v0.26.0.tar.gz
+    - platform: macos_arm64
+      url: datafusion/v0.26.0/datafusion_macos_arm64_v0.26.0.tar.gz
+    - platform: windows_amd64
+      url: datafusion/v0.26.0/datafusion_windows_amd64_v0.26.0.tar.gz
+    version: v0.26.0
+  docs_url: https://adbc-drivers.org/drivers/datafusion/
+- name: ADBC Driver Foundry Driver for Apache Spark
+  description: An ADBC driver for Apache Spark developed by the ADBC Driver 
+    Foundry
+  license: Apache-2.0
+  path: spark
+  urls:
+  - https://adbc-drivers.org
+  pkginfo:
+  - packages:
+    - platform: linux_amd64
+      url: spark/v0.1.0-alpha.2/spark_linux_amd64_v0.1.0-alpha.2.tar.gz
+    - platform: linux_arm64
+      url: spark/v0.1.0-alpha.2/spark_linux_arm64_v0.1.0-alpha.2.tar.gz
+    - platform: macos_arm64
+      url: spark/v0.1.0-alpha.2/spark_macos_arm64_v0.1.0-alpha.2.tar.gz
+    - platform: windows_amd64
+      url: spark/v0.1.0-alpha.2/spark_windows_amd64_v0.1.0-alpha.2.tar.gz
+    version: v0.1.0-alpha.2
+  - packages:
+    - platform: linux_amd64
+      url: spark/v0.1.0-alpha.3/spark_linux_amd64_v0.1.0-alpha.3.tar.gz
+    - platform: linux_arm64
+      url: spark/v0.1.0-alpha.3/spark_linux_arm64_v0.1.0-alpha.3.tar.gz
+    - platform: macos_arm64
+      url: spark/v0.1.0-alpha.3/spark_macos_arm64_v0.1.0-alpha.3.tar.gz
+    - platform: windows_amd64
+      url: spark/v0.1.0-alpha.3/spark_windows_amd64_v0.1.0-alpha.3.tar.gz
+    version: v0.1.0-alpha.3
+  - packages:
+    - platform: linux_amd64
+      url: spark/v0.1.0/spark_linux_amd64_v0.1.0.tar.gz
+    - platform: linux_arm64
+      url: spark/v0.1.0/spark_linux_arm64_v0.1.0.tar.gz
+    - platform: macos_arm64
+      url: spark/v0.1.0/spark_macos_arm64_v0.1.0.tar.gz
+    - platform: windows_amd64
+      url: spark/v0.1.0/spark_windows_amd64_v0.1.0.tar.gz
+    version: v0.1.0
+  docs_url: https://adbc-drivers.org/drivers/spark/

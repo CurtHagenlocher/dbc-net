@@ -1,0 +1,61 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    Exercises the shipped NuGet package by building real projects with `dotnet build`
+    in a separate process. It deliberately has no ProjectReference to the product: the
+    only way it reaches the tasks is through the packed nupkg, so a packaging mistake
+    fails these tests rather than hiding behind a direct reference.
+  -->
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+    <AssemblyName>Adbc.Drivers.Build.IntegrationTests</AssemblyName>
+    <RootNamespace>Adbc.Drivers.Build.IntegrationTests</RootNamespace>
+    <NoWarn>$(NoWarn);CA1305;CA1307;CA1310;CA1861;CA1859;CA1822;CA1845;CA1865</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="xunit" />
+    <PackageReference Include="xunit.runner.visualstudio">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Fixture builders shared with the unit tests; all self-contained. -->
+    <Compile Include="..\Adbc.Drivers.Tasks.Tests\TestSupport\TempDirectory.cs" LinkBase="TestSupport" />
+    <Compile Include="..\Adbc.Drivers.Tasks.Tests\TestSupport\TarGzBuilder.cs" LinkBase="TestSupport" />
+    <Compile Include="..\Adbc.Drivers.Tasks.Tests\TestSupport\FixtureRegistry.cs" LinkBase="TestSupport" />
+  </ItemGroup>
+
+  <!-- Paths the tests need, baked in rather than rediscovered at run time. -->
+  <ItemGroup>
+    <AssemblyAttribute Include="System.Reflection.AssemblyMetadataAttribute">
+      <_Parameter1>AdbcPackageFeed</_Parameter1>
+      <_Parameter2>$(PackageOutputPath)</_Parameter2>
+    </AssemblyAttribute>
+    <AssemblyAttribute Include="System.Reflection.AssemblyMetadataAttribute">
+      <_Parameter1>AdbcPackageVersion</_Parameter1>
+      <_Parameter2>$(Version)</_Parameter2>
+    </AssemblyAttribute>
+    <AssemblyAttribute Include="System.Reflection.AssemblyMetadataAttribute">
+      <_Parameter1>AdbcRepoRoot</_Parameter1>
+      <_Parameter2>$(RepoRoot)</_Parameter2>
+    </AssemblyAttribute>
+  </ItemGroup>
+
+  <!--
+    The package under test must exist before any test runs. Packing here rather than
+    relying on solution build order keeps `dotnet test` on this project self-sufficient.
+  -->
+  <Target Name="_PackProductUnderTest" BeforeTargets="Build">
+    <MSBuild Projects="$(RepoRoot)src\Adbc.Drivers.Build\Adbc.Drivers.Build.csproj"
+             Targets="Pack"
+             Properties="Configuration=$(Configuration)" />
+  </Target>
+
+</Project>

@@ -1,0 +1,39 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+    <AssemblyName>Adbc.Drivers.Tasks.Tests</AssemblyName>
+    <RootNamespace>Adbc.Drivers.Build.Tests</RootNamespace>
+    <!--
+      Analyzer rules that only matter for hot production code; test helpers favour
+      clarity over allocation counts.
+    -->
+    <NoWarn>$(NoWarn);CA1305;CA1307;CA1310;CA1861;CA1859;CA1822;CA1845;CA1865</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Resolves to the netstandard2.0 build of the multi-targeted tasks assembly. -->
+    <ProjectReference Include="..\..\src\Adbc.Drivers.Tasks\Adbc.Drivers.Tasks.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!--
+      A committed snapshot of the live public registry index. Parsing it in full is the
+      regression guard that matters most: the YAML subset the index actually uses is
+      wider than its documented shape suggests.
+    -->
+    <EmbeddedResource Include="Fixtures\*.yaml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="xunit" />
+    <PackageReference Include="xunit.runner.visualstudio">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+  </ItemGroup>
+
+</Project>

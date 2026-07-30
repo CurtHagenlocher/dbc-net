@@ -1,0 +1,40 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <!--
+      netstandard2.0 loads into `dotnet build` (MSBuild on .NET) and net472 loads
+      into MSBuild.exe / Visual Studio. The targets pick one via
+      $(MSBuildRuntimeType); see build/Adbc.Drivers.Build.targets.
+    -->
+    <TargetFrameworks>netstandard2.0;net472</TargetFrameworks>
+    <AssemblyName>Adbc.Drivers.Tasks</AssemblyName>
+    <RootNamespace>Adbc.Drivers.Build</RootNamespace>
+
+    <!-- Packaged by src/Adbc.Drivers.Build, never on its own. -->
+    <IsPackable>false</IsPackable>
+
+    <!--
+      This assembly ships inside an MSBuild task package and is loaded into a
+      long-lived host process shared with every other task. It therefore has NO
+      external assembly dependencies at all: the YAML, TOML, JSON, tar, and
+      semver readers under Text/, Archives/, and Model/ exist so that consuming a
+      driver registry can never trigger an assembly version conflict with
+      another task in the same MSBuild process.
+    -->
+    <NoWarn>$(NoWarn);CA1305;CA1307;CA1310;CA1062;CA2007</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Build.Framework" ExcludeAssets="runtime" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.Build.Utilities.Core" ExcludeAssets="runtime" PrivateAssets="all" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'net472'">
+    <Reference Include="System.Net.Http" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="Adbc.Drivers.Tasks.Tests" />
+  </ItemGroup>
+
+</Project>

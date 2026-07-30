@@ -1,0 +1,20 @@
+# Normalize text to LF in the index, and check it out as LF everywhere.
+#
+# LF on checkout is not merely a style preference here. The driver lock file and
+# the generated ADBC runtime manifests are compared byte-for-byte against freshly
+# serialized content that uses LF: DriverLock.Save and RuntimeManifestGenerator
+# both skip writing when the content is unchanged, so that an unchanged resolve
+# does not touch a file's timestamp and retrigger downstream incremental builds.
+# A CRLF checkout would defeat that comparison and make every resolve report a
+# change it did not make.
+* text=auto eol=lf
+
+# Binary and archive fixtures must never be translated.
+*.png binary
+*.jpg binary
+*.gz binary
+*.zip binary
+*.nupkg binary
+*.dll binary
+*.so binary
+*.dylib binary

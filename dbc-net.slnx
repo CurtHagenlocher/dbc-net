@@ -1,0 +1,10 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Adbc.Drivers.Build/Adbc.Drivers.Build.csproj" />
+    <Project Path="src/Adbc.Drivers.Tasks/Adbc.Drivers.Tasks.csproj" />
+  </Folder>
+  <Folder Name="/test/">
+    <Project Path="test/Adbc.Drivers.Build.IntegrationTests/Adbc.Drivers.Build.IntegrationTests.csproj" />
+    <Project Path="test/Adbc.Drivers.Tasks.Tests/Adbc.Drivers.Tasks.Tests.csproj" />
+  </Folder>
+</Solution>

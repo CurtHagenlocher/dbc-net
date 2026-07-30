@@ -1,0 +1,22 @@
+﻿<Project>
+
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+    <CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!--
+      Reference the LOWEST MSBuild version the task must load into. The task is
+      compiled against these but never ships them: the MSBuild host always
+      supplies its own, newer copies at runtime.
+    -->
+    <PackageVersion Include="Microsoft.Build.Framework" Version="17.8.3" />
+    <PackageVersion Include="Microsoft.Build.Utilities.Core" Version="17.8.3" />
+
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.12.0" />
+    <PackageVersion Include="xunit" Version="2.9.2" />
+    <PackageVersion Include="xunit.runner.visualstudio" Version="2.8.2" />
+  </ItemGroup>
+
+</Project>

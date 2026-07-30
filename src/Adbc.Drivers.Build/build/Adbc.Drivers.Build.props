@@ -1,0 +1,65 @@
+<Project>
+
+  <!--
+    Imported by NuGet before the consuming project's own content, so every property
+    here is a default the project can override.
+  -->
+
+  <PropertyGroup>
+    <AdbcDriversBuildPackageRoot Condition="'$(AdbcDriversBuildPackageRoot)' == ''">$([MSBuild]::NormalizeDirectory('$(MSBuildThisFileDirectory)', '..'))</AdbcDriversBuildPackageRoot>
+
+    <!-- The build's source of truth. Commit this file. -->
+    <AdbcDriverLockFile Condition="'$(AdbcDriverLockFile)' == ''">$(MSBuildProjectDirectory)\adbc.drivers.lock.json</AdbcDriverLockFile>
+
+    <!--
+      CacheOnly by default. A build that cannot reach the network is a feature, not a
+      limitation: it guarantees the build used bytes that were already verified against
+      the committed lock. Set Online to let a build populate the cache itself.
+    -->
+    <AdbcDriverNetworkMode Condition="'$(AdbcDriverNetworkMode)' == ''">CacheOnly</AdbcDriverNetworkMode>
+
+    <AdbcDriverDeployOnBuild Condition="'$(AdbcDriverDeployOnBuild)' == ''">true</AdbcDriverDeployOnBuild>
+    <AdbcDriverDeployOnPublish Condition="'$(AdbcDriverDeployOnPublish)' == ''">true</AdbcDriverDeployOnPublish>
+
+    <!-- Subdirectory of the output folder that receives drivers and manifests. -->
+    <AdbcDriverOutputSubdirectory Condition="'$(AdbcDriverOutputSubdirectory)' == ''">adbc</AdbcDriverOutputSubdirectory>
+
+    <AdbcDriverGenerateRuntimeManifests Condition="'$(AdbcDriverGenerateRuntimeManifests)' == ''">true</AdbcDriverGenerateRuntimeManifests>
+
+    <!--
+      ADBC driver managers reject relative shared-library paths by default, so manifests
+      are generated with absolute paths for the directory they are written into. Opt in
+      only if your driver manager is configured to accept relative paths.
+    -->
+    <AdbcDriverRelativeManifestPaths Condition="'$(AdbcDriverRelativeManifestPaths)' == ''">false</AdbcDriverRelativeManifestPaths>
+
+    <!-- Only ever read by the explicit ResolveAdbcDriverLock target. -->
+    <AdbcDriverRegistries Condition="'$(AdbcDriverRegistries)' == ''">https://dbc-cdn.columnar.tech/</AdbcDriverRegistries>
+    <AdbcDriverAllowPrerelease Condition="'$(AdbcDriverAllowPrerelease)' == ''">false</AdbcDriverAllowPrerelease>
+
+    <!-- Empty means $(UserProfile)/.adbc/driver-cache, or $ADBC_DRIVER_CACHE. -->
+    <AdbcDriverCachePath Condition="'$(AdbcDriverCachePath)' == ''"></AdbcDriverCachePath>
+
+    <!-- Re-hash cached files on every build. Correct but slow; off by default. -->
+    <AdbcDriverVerifyFileHashes Condition="'$(AdbcDriverVerifyFileHashes)' == ''">false</AdbcDriverVerifyFileHashes>
+
+    <AdbcDriverCacheLockTimeoutSeconds Condition="'$(AdbcDriverCacheLockTimeoutSeconds)' == ''">600</AdbcDriverCacheLockTimeoutSeconds>
+    <AdbcDriverNetworkTimeoutSeconds Condition="'$(AdbcDriverNetworkTimeoutSeconds)' == ''">300</AdbcDriverNetworkTimeoutSeconds>
+
+    <!-- Hostile-archive limits. Raise only if a legitimate driver needs it. -->
+    <AdbcDriverMaxExpandedBytes Condition="'$(AdbcDriverMaxExpandedBytes)' == ''">1073741824</AdbcDriverMaxExpandedBytes>
+    <AdbcDriverMaxArchiveEntries Condition="'$(AdbcDriverMaxArchiveEntries)' == ''">1024</AdbcDriverMaxArchiveEntries>
+
+    <!--
+      Test-fixture escape hatch for a plaintext registry on a non-loopback host.
+      Never set this for a real registry.
+    -->
+    <AdbcDriverAllowInsecureHttp Condition="'$(AdbcDriverAllowInsecureHttp)' == ''">false</AdbcDriverAllowInsecureHttp>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Makes AdbcDriver items and their metadata visible in the IDE's property grid. -->
+    <AvailableItemName Include="AdbcDriver" />
+  </ItemGroup>
+
+</Project>

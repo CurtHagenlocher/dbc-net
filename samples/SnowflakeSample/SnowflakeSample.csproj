@@ -1,0 +1,39 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    Consumes the real Apache Snowflake ADBC driver from the public Columnar registry,
+    driven by the committed adbc.drivers.lock.json next to this file.
+
+    This sample is intentionally not part of dbc-net.sln: it references
+    Adbc.Drivers.Build as a NuGet package, which must be packed first.
+
+      dotnet pack src\Adbc.Drivers.Build\Adbc.Drivers.Build.csproj
+      dotnet build samples\SnowflakeSample -p:AdbcDriverNetworkMode=Online
+  -->
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <RootNamespace>SnowflakeSample</RootNamespace>
+    <IsPackable>false</IsPackable>
+
+    <!--
+      A consumer of the published package would not have this repository's central
+      package management, so the sample opts out to stay representative.
+    -->
+    <ManagePackageVersionsCentrally>false</ManagePackageVersionsCentrally>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Adbc.Drivers.Build" Version="0.1.0-dev" PrivateAssets="all" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!--
+      Both RIDs are requested so the generated manifest carries a Driver.shared platform
+      map rather than a single path.
+    -->
+    <AdbcDriver Include="snowflake" Version="1.11.0" Rids="win-x64;linux-x64" />
+  </ItemGroup>
+
+</Project>

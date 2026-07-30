@@ -1,0 +1,101 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    The product deliverable: a build-time-only NuGet package containing the MSBuild
+    integration. It ships no library for consumers to compile against, only imported
+    targets under build/ and the task assemblies under tools/.
+  -->
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <PackageId>Adbc.Drivers.Build</PackageId>
+    <IsPackable>true</IsPackable>
+
+    <!-- Nothing from this project is compiled into the package. -->
+    <IncludeBuildOutput>false</IncludeBuildOutput>
+    <IncludeSymbols>false</IncludeSymbols>
+    <SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+
+    <!--
+      Marks the package as build-time only so it never flows to consumers of a library
+      that references it. A class library must not silently cause downstream applications
+      to download and redistribute native database drivers, which is also why this
+      package has no buildTransitive/ directory.
+    -->
+    <DevelopmentDependency>true</DevelopmentDependency>
+
+    <!-- Expected: the package intentionally has no lib/ or ref/ assets. -->
+    <NoWarn>$(NoWarn);NU5128</NoWarn>
+
+    <Title>ADBC driver acquisition for MSBuild</Title>
+    <Description>
+      Build-time MSBuild integration that deploys Arrow Database Connectivity (ADBC) drivers
+      into a .NET project's build and publish output. An explicit resolve step reads
+      Columnar-compatible driver registries and writes a committed lock file of exact
+      versions, URLs, and SHA-256 hashes; ordinary builds read only that lock file and a
+      verified content-addressed cache.
+    </Description>
+    <PackageTags>adbc;arrow;msbuild;build;native;drivers;dbc</PackageTags>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Build ordering only; nothing is referenced for compilation. -->
+    <ProjectReference Include="..\Adbc.Drivers.Tasks\Adbc.Drivers.Tasks.csproj"
+                      ReferenceOutputAssembly="false"
+                      PrivateAssets="all"
+                      SkipGetTargetFrameworkProperties="true" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="build\Adbc.Drivers.Build.props" Pack="true" PackagePath="build\" />
+    <None Include="build\Adbc.Drivers.Build.targets" Pack="true" PackagePath="build\" />
+    <None Include="buildMultiTargeting\Adbc.Drivers.Build.props" Pack="true" PackagePath="buildMultiTargeting\" />
+    <None Include="buildMultiTargeting\Adbc.Drivers.Build.targets" Pack="true" PackagePath="buildMultiTargeting\" />
+    <None Include="README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <TargetsForTfmSpecificContentInPackage>$(TargetsForTfmSpecificContentInPackage);_AddAdbcTaskAssembliesToPackage</TargetsForTfmSpecificContentInPackage>
+  </PropertyGroup>
+
+  <!--
+    The task assemblies are collected by building the tasks project for each target
+    framework and asking MSBuild where the output landed, rather than by globbing a
+    conventional bin path. Globs are evaluated before the referenced project has built,
+    so a clean pack would otherwise silently produce a package with no tools/.
+  -->
+  <Target Name="_AddAdbcTaskAssembliesToPackage">
+    <MSBuild Projects="..\Adbc.Drivers.Tasks\Adbc.Drivers.Tasks.csproj"
+             Targets="Build"
+             Properties="TargetFramework=netstandard2.0;Configuration=$(Configuration)">
+      <Output TaskParameter="TargetOutputs" ItemName="_AdbcTasksNetStandardOutput" />
+    </MSBuild>
+
+    <MSBuild Projects="..\Adbc.Drivers.Tasks\Adbc.Drivers.Tasks.csproj"
+             Targets="Build"
+             Properties="TargetFramework=net472;Configuration=$(Configuration)">
+      <Output TaskParameter="TargetOutputs" ItemName="_AdbcTasksNetFrameworkOutput" />
+    </MSBuild>
+
+    <ItemGroup>
+      <_AdbcTaskPackageFile Include="@(_AdbcTasksNetStandardOutput)" PackageSubdirectory="tools/netstandard2.0" />
+      <_AdbcTaskPackageFile Include="@(_AdbcTasksNetStandardOutput->'%(RootDir)%(Directory)%(Filename).pdb')"
+                            PackageSubdirectory="tools/netstandard2.0"
+                            Condition="Exists('%(RootDir)%(Directory)%(Filename).pdb')" />
+      <_AdbcTaskPackageFile Include="@(_AdbcTasksNetFrameworkOutput)" PackageSubdirectory="tools/net472" />
+      <_AdbcTaskPackageFile Include="@(_AdbcTasksNetFrameworkOutput->'%(RootDir)%(Directory)%(Filename).pdb')"
+                            PackageSubdirectory="tools/net472"
+                            Condition="Exists('%(RootDir)%(Directory)%(Filename).pdb')" />
+    </ItemGroup>
+
+    <Error Condition="'@(_AdbcTasksNetStandardOutput)' == '' or '@(_AdbcTasksNetFrameworkOutput)' == ''"
+           Text="The Adbc.Drivers.Tasks assemblies were not produced, so the package would contain no usable tasks." />
+
+    <ItemGroup>
+      <TfmSpecificPackageFile Include="@(_AdbcTaskPackageFile)" PackagePath="%(PackageSubdirectory)/" />
+    </ItemGroup>
+  </Target>
+
+</Project>

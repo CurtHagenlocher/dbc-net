@@ -1,0 +1,44 @@
+<Project>
+
+  <!--
+    The outer build of a multi-targeted project selects no single TFM, RID, or output
+    directory, so there is nothing to deploy into: driver acquisition happens once per
+    inner build instead. Only the explicit resolve target is exposed here, because
+    resolution is per-project rather than per-TFM.
+  -->
+
+  <PropertyGroup>
+    <AdbcDriversBuildTasksAssembly Condition="'$(AdbcDriversBuildTasksAssembly)' == '' and '$(MSBuildRuntimeType)' == 'Core'">$(AdbcDriversBuildPackageRoot)tools\netstandard2.0\Adbc.Drivers.Tasks.dll</AdbcDriversBuildTasksAssembly>
+    <AdbcDriversBuildTasksAssembly Condition="'$(AdbcDriversBuildTasksAssembly)' == ''">$(AdbcDriversBuildPackageRoot)tools\net472\Adbc.Drivers.Tasks.dll</AdbcDriversBuildTasksAssembly>
+  </PropertyGroup>
+
+  <UsingTask TaskName="Adbc.Drivers.Build.Tasks.ResolveAdbcDriverLock" AssemblyFile="$(AdbcDriversBuildTasksAssembly)" />
+
+  <Target Name="ResolveAdbcDriverLock">
+    <PropertyGroup>
+      <_AdbcDriverDefaultRids>$(AdbcDriverRuntimeIdentifiers)</_AdbcDriverDefaultRids>
+      <_AdbcDriverDefaultRids Condition="'$(_AdbcDriverDefaultRids)' == ''">$(RuntimeIdentifiers)</_AdbcDriverDefaultRids>
+      <_AdbcDriverDefaultRids Condition="'$(_AdbcDriverDefaultRids)' == ''">$(RuntimeIdentifier)</_AdbcDriverDefaultRids>
+      <_AdbcDriverDefaultRids Condition="'$(_AdbcDriverDefaultRids)' == ''">$(NETCoreSdkPortableRuntimeIdentifier)</_AdbcDriverDefaultRids>
+    </PropertyGroup>
+
+    <Error Condition="'@(AdbcDriver)' == ''"
+           Text="There are no AdbcDriver items to resolve. Add an item such as: &lt;AdbcDriver Include=&quot;snowflake&quot; Version=&quot;1.11.0&quot; Rids=&quot;win-x64&quot; /&gt;" />
+
+    <Adbc.Drivers.Build.Tasks.ResolveAdbcDriverLock
+        Drivers="@(AdbcDriver)"
+        LockFile="$(AdbcDriverLockFile)"
+        Registries="$(AdbcDriverRegistries)"
+        DefaultRuntimeIdentifiers="$(_AdbcDriverDefaultRids)"
+        AllowPrerelease="$(AdbcDriverAllowPrerelease)"
+        CacheRoot="$(AdbcDriverCachePath)"
+        CacheLockTimeoutSeconds="$(AdbcDriverCacheLockTimeoutSeconds)"
+        NetworkTimeoutSeconds="$(AdbcDriverNetworkTimeoutSeconds)"
+        MaxExpandedBytes="$(AdbcDriverMaxExpandedBytes)"
+        MaxArchiveEntries="$(AdbcDriverMaxArchiveEntries)"
+        AllowInsecureHttp="$(AdbcDriverAllowInsecureHttp)">
+      <Output TaskParameter="LockFileChanged" PropertyName="AdbcDriverLockFileChanged" />
+    </Adbc.Drivers.Build.Tasks.ResolveAdbcDriverLock>
+  </Target>
+
+</Project>

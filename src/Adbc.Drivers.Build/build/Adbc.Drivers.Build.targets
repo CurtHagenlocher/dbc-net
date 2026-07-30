@@ -1,0 +1,189 @@
+<Project>
+
+  <!--
+    Target ordering uses BeforeTargets/AfterTargets throughout rather than overriding
+    BeforeBuild/AfterBuild, so a consuming project remains free to use those itself.
+  -->
+
+  <PropertyGroup>
+    <!--
+      MSBuild.exe and Visual Studio run on .NET Framework; `dotnet build` runs on .NET.
+      A single netstandard2.0 assembly would load into both, but the net472 build avoids
+      the System.Net.Http facade problems that netstandard2.0 assemblies hit under
+      .NET Framework hosts.
+    -->
+    <AdbcDriversBuildTasksAssembly Condition="'$(AdbcDriversBuildTasksAssembly)' == '' and '$(MSBuildRuntimeType)' == 'Core'">$(AdbcDriversBuildPackageRoot)tools\netstandard2.0\Adbc.Drivers.Tasks.dll</AdbcDriversBuildTasksAssembly>
+    <AdbcDriversBuildTasksAssembly Condition="'$(AdbcDriversBuildTasksAssembly)' == ''">$(AdbcDriversBuildPackageRoot)tools\net472\Adbc.Drivers.Tasks.dll</AdbcDriversBuildTasksAssembly>
+  </PropertyGroup>
+
+  <UsingTask TaskName="Adbc.Drivers.Build.Tasks.AcquireAdbcDrivers" AssemblyFile="$(AdbcDriversBuildTasksAssembly)" />
+  <UsingTask TaskName="Adbc.Drivers.Build.Tasks.ResolveAdbcDriverLock" AssemblyFile="$(AdbcDriversBuildTasksAssembly)" />
+  <UsingTask TaskName="Adbc.Drivers.Build.Tasks.GenerateAdbcRuntimeManifests" AssemblyFile="$(AdbcDriversBuildTasksAssembly)" />
+
+  <PropertyGroup>
+    <!--
+      `dotnet pack` builds first. Redistributing a native database driver inside another
+      NuGet package requires rights this package cannot grant, so driver deployment is
+      suppressed during pack unless the project owner explicitly opts in.
+
+      The .NET SDK's global property is $(_IsPacking); $(IsPacking) is also honoured
+      because it is the spelling that appears in some documentation, and reading both
+      costs nothing.
+    -->
+    <_AdbcDriverIsPacking>false</_AdbcDriverIsPacking>
+    <_AdbcDriverIsPacking Condition="'$(_IsPacking)' == 'true' or '$(IsPacking)' == 'true'">true</_AdbcDriverIsPacking>
+    <AdbcDriverDeployOnBuild Condition="'$(_AdbcDriverIsPacking)' == 'true' and '$(AdbcDriverIncludeInPackage)' != 'true'">false</AdbcDriverDeployOnBuild>
+    <AdbcDriverDeployOnPublish Condition="'$(_AdbcDriverIsPacking)' == 'true' and '$(AdbcDriverIncludeInPackage)' != 'true'">false</AdbcDriverDeployOnPublish>
+
+    <_AdbcDriverIntermediateRoot>$([MSBuild]::NormalizeDirectory('$(MSBuildProjectDirectory)', '$(IntermediateOutputPath)', 'adbc'))</_AdbcDriverIntermediateRoot>
+
+    <!--
+      Skipped for design-time builds (the IDE must never block on a download) and for the
+      outer build of a multi-targeted project (which has no single TFM, RID, or output
+      directory to deploy into).
+    -->
+    <_AdbcDriverEnabled>true</_AdbcDriverEnabled>
+    <_AdbcDriverEnabled Condition="'$(DesignTimeBuild)' == 'true'">false</_AdbcDriverEnabled>
+    <_AdbcDriverEnabled Condition="'$(IsCrossTargetingBuild)' == 'true'">false</_AdbcDriverEnabled>
+  </PropertyGroup>
+
+  <Target Name="_AdbcDriverComputeRuntimeIdentifiers">
+    <PropertyGroup>
+      <_AdbcDriverDefaultRids>$(AdbcDriverRuntimeIdentifiers)</_AdbcDriverDefaultRids>
+      <_AdbcDriverDefaultRids Condition="'$(_AdbcDriverDefaultRids)' == ''">$(RuntimeIdentifier)</_AdbcDriverDefaultRids>
+      <_AdbcDriverDefaultRids Condition="'$(_AdbcDriverDefaultRids)' == ''">$(RuntimeIdentifiers)</_AdbcDriverDefaultRids>
+      <!-- Last resort: the SDK's own portable RID for this machine. -->
+      <_AdbcDriverDefaultRids Condition="'$(_AdbcDriverDefaultRids)' == ''">$(NETCoreSdkPortableRuntimeIdentifier)</_AdbcDriverDefaultRids>
+    </PropertyGroup>
+  </Target>
+
+  <!--
+    Deliberately has no Inputs/Outputs. A skipped target produces no output items, which
+    would silently leave the copy and publish targets below with nothing to deploy. The
+    task is cheap on a warm cache: it compares file lengths against an immutable store
+    and copies nothing when they match.
+  -->
+  <Target Name="_AcquireAdbcDrivers"
+          DependsOnTargets="_AdbcDriverComputeRuntimeIdentifiers"
+          Condition="'$(_AdbcDriverEnabled)' == 'true' and '@(AdbcDriver)' != ''">
+
+    <Adbc.Drivers.Build.Tasks.AcquireAdbcDrivers
+        Drivers="@(AdbcDriver)"
+        LockFile="$(AdbcDriverLockFile)"
+        DestinationRoot="$(_AdbcDriverIntermediateRoot)"
+        DefaultRuntimeIdentifiers="$(_AdbcDriverDefaultRids)"
+        NetworkMode="$(AdbcDriverNetworkMode)"
+        CacheRoot="$(AdbcDriverCachePath)"
+        VerifyFileHashes="$(AdbcDriverVerifyFileHashes)"
+        CacheLockTimeoutSeconds="$(AdbcDriverCacheLockTimeoutSeconds)"
+        NetworkTimeoutSeconds="$(AdbcDriverNetworkTimeoutSeconds)"
+        MaxExpandedBytes="$(AdbcDriverMaxExpandedBytes)"
+        MaxArchiveEntries="$(AdbcDriverMaxArchiveEntries)"
+        AllowInsecureHttp="$(AdbcDriverAllowInsecureHttp)">
+      <Output TaskParameter="DeploymentFiles" ItemName="_AdbcDeploymentFiles" />
+      <Output TaskParameter="DeploymentPlanFile" PropertyName="_AdbcDeploymentPlanFile" />
+      <Output TaskParameter="LockFileDigest" PropertyName="AdbcDriverLockFileDigest" />
+    </Adbc.Drivers.Build.Tasks.AcquireAdbcDrivers>
+  </Target>
+
+  <Target Name="_CopyAdbcDriversToBuildOutput"
+          AfterTargets="CopyFilesToOutputDirectory"
+          DependsOnTargets="_AcquireAdbcDrivers"
+          Condition="'$(_AdbcDriverEnabled)' == 'true' and '$(AdbcDriverDeployOnBuild)' == 'true' and '@(AdbcDriver)' != ''">
+
+    <ItemGroup>
+      <_AdbcBuildOutputFile Include="@(_AdbcDeploymentFiles)" Condition="'%(_AdbcDeploymentFiles.AdbcCopyToBuildOutput)' == 'true'" />
+    </ItemGroup>
+
+    <Copy SourceFiles="@(_AdbcBuildOutputFile)"
+          DestinationFiles="@(_AdbcBuildOutputFile->'$(TargetDir)$(AdbcDriverOutputSubdirectory)\%(AdbcRelativePath)')"
+          SkipUnchangedFiles="true"
+          Retries="3">
+      <Output TaskParameter="CopiedFiles" ItemName="FileWrites" />
+      <Output TaskParameter="DestinationFiles" ItemName="_AdbcCopiedBuildOutputFile" />
+    </Copy>
+
+    <!--
+      Generated here, not during acquisition: Driver.shared must be an absolute path, so
+      the manifest can only be written once the destination directory is known.
+    -->
+    <Adbc.Drivers.Build.Tasks.GenerateAdbcRuntimeManifests
+        Condition="'$(AdbcDriverGenerateRuntimeManifests)' == 'true'"
+        DeploymentPlanFile="$(_AdbcDeploymentPlanFile)"
+        DeploymentRoot="$(TargetDir)$(AdbcDriverOutputSubdirectory)"
+        UseRelativePaths="$(AdbcDriverRelativeManifestPaths)">
+      <Output TaskParameter="ManifestFiles" ItemName="FileWrites" />
+    </Adbc.Drivers.Build.Tasks.GenerateAdbcRuntimeManifests>
+  </Target>
+
+  <Target Name="_AddAdbcDriversToPublish"
+          BeforeTargets="ComputeFilesToPublish"
+          DependsOnTargets="_AcquireAdbcDrivers"
+          Condition="'$(_AdbcDriverEnabled)' == 'true' and '$(AdbcDriverDeployOnPublish)' == 'true' and '@(AdbcDriver)' != ''">
+
+    <PropertyGroup>
+      <_AdbcPublishRoot>$([MSBuild]::NormalizeDirectory('$(MSBuildProjectDirectory)', '$(PublishDir)', '$(AdbcDriverOutputSubdirectory)'))</_AdbcPublishRoot>
+      <_AdbcPublishManifestStaging>$([MSBuild]::NormalizeDirectory('$(_AdbcDriverIntermediateRoot)', 'publish-manifests'))</_AdbcPublishManifestStaging>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <_AdbcPublishFile Include="@(_AdbcDeploymentFiles)" Condition="'%(_AdbcDeploymentFiles.AdbcCopyToPublishDirectory)' == 'true'" />
+
+      <ResolvedFileToPublish Include="@(_AdbcPublishFile)">
+        <RelativePath>$(AdbcDriverOutputSubdirectory)\%(_AdbcPublishFile.AdbcRelativePath)</RelativePath>
+        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+        <!-- Native libraries must stay on disk for the ADBC driver manager to load them. -->
+        <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      </ResolvedFileToPublish>
+    </ItemGroup>
+
+    <!--
+      Staged separately from the build-output manifests because their absolute paths
+      point at the publish directory, not $(TargetDir).
+    -->
+    <Adbc.Drivers.Build.Tasks.GenerateAdbcRuntimeManifests
+        Condition="'$(AdbcDriverGenerateRuntimeManifests)' == 'true'"
+        DeploymentPlanFile="$(_AdbcDeploymentPlanFile)"
+        DeploymentRoot="$(_AdbcPublishRoot)"
+        OutputDirectory="$(_AdbcPublishManifestStaging)"
+        UseRelativePaths="$(AdbcDriverRelativeManifestPaths)">
+      <Output TaskParameter="ManifestFiles" ItemName="_AdbcPublishManifestFile" />
+    </Adbc.Drivers.Build.Tasks.GenerateAdbcRuntimeManifests>
+
+    <ItemGroup>
+      <ResolvedFileToPublish Include="@(_AdbcPublishManifestFile)">
+        <RelativePath>$(AdbcDriverOutputSubdirectory)\%(_AdbcPublishManifestFile.AdbcRelativePath)</RelativePath>
+        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+        <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      </ResolvedFileToPublish>
+    </ItemGroup>
+  </Target>
+
+  <!--
+    The explicit resolve step. Never runs as part of Build or Publish: it reads mutable
+    registry indexes, applies version constraints, and rewrites the lock file, all of
+    which must be a deliberate act whose result is reviewed and committed.
+
+      dotnet build -t:ResolveAdbcDriverLock
+  -->
+  <Target Name="ResolveAdbcDriverLock" DependsOnTargets="_AdbcDriverComputeRuntimeIdentifiers">
+    <Error Condition="'@(AdbcDriver)' == ''"
+           Text="There are no AdbcDriver items to resolve. Add an item such as: &lt;AdbcDriver Include=&quot;snowflake&quot; Version=&quot;1.11.0&quot; Rids=&quot;win-x64&quot; /&gt;" />
+
+    <Adbc.Drivers.Build.Tasks.ResolveAdbcDriverLock
+        Drivers="@(AdbcDriver)"
+        LockFile="$(AdbcDriverLockFile)"
+        Registries="$(AdbcDriverRegistries)"
+        DefaultRuntimeIdentifiers="$(_AdbcDriverDefaultRids)"
+        AllowPrerelease="$(AdbcDriverAllowPrerelease)"
+        CacheRoot="$(AdbcDriverCachePath)"
+        CacheLockTimeoutSeconds="$(AdbcDriverCacheLockTimeoutSeconds)"
+        NetworkTimeoutSeconds="$(AdbcDriverNetworkTimeoutSeconds)"
+        MaxExpandedBytes="$(AdbcDriverMaxExpandedBytes)"
+        MaxArchiveEntries="$(AdbcDriverMaxArchiveEntries)"
+        AllowInsecureHttp="$(AdbcDriverAllowInsecureHttp)">
+      <Output TaskParameter="LockFileChanged" PropertyName="AdbcDriverLockFileChanged" />
+    </Adbc.Drivers.Build.Tasks.ResolveAdbcDriverLock>
+  </Target>
+
+</Project>
