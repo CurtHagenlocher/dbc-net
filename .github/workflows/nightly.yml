@@ -75,8 +75,13 @@ jobs:
 
       # The sample consumes the package from the local feed, so it also covers the
       # NuGet.config and packaging path that the integration tests reach differently.
+      #
+      # VersionSuffix is set explicitly because Directory.Build.props drops it when
+      # CI is true, which would pack 0.1.0 while the sample's committed PackageReference
+      # pins 0.1.0-dev. Pinning it here keeps the sample identical to what a developer
+      # builds locally rather than making the sample track the build environment.
       - name: Pack
-        run: dotnet pack src/Adbc.Drivers.Build/Adbc.Drivers.Build.csproj -c Release
+        run: dotnet pack src/Adbc.Drivers.Build/Adbc.Drivers.Build.csproj -c Release -p:VersionSuffix=dev
 
       # The sample pins win-x64 and linux-x64 regardless of host, so every runner
       # exercises cross-RID acquisition.
