@@ -1,6 +1,7 @@
 using System;
 using System.Globalization;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Threading;
 
 namespace Adbc.Drivers.Build.Caching
@@ -34,6 +35,29 @@ namespace Adbc.Drivers.Build.Caching
             _stream = stream;
         }
 
+        /// <summary>
+        /// Whether the lock file is removed when the lease is released.
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// Windows only. There, <see cref="FileShare.None"/> means exactly one handle to
+        /// the file exists at a time, so create-lock-delete is race-free.
+        /// </para>
+        /// <para>
+        /// On Unix, .NET implements <see cref="FileShare"/> with <c>flock</c> and
+        /// <see cref="FileOptions.DeleteOnClose"/> by unlinking on close. Unlinking while
+        /// another process sits between <c>open()</c> and <c>flock()</c> would let that
+        /// process lock the old inode while a third creates and locks a new file at the
+        /// same path — two holders of one lock. The file is therefore left in place;
+        /// the kernel releases <c>flock</c> when a process dies, so a crash cannot leave
+        /// a permanently held lease either way.
+        /// </para>
+        /// </remarks>
+        private static readonly FileOptions LeaseOptions =
+            RuntimeInformation.IsOSPlatform(OSPlatform.Windows)
+                ? FileOptions.DeleteOnClose
+                : FileOptions.None;
+
         public static FileLease Acquire(string path, TimeSpan timeout)
         {
             if (path is null) throw new ArgumentNullException(nameof(path));
@@ -44,8 +68,6 @@ namespace Adbc.Drivers.Build.Caching
                 Directory.CreateDirectory(directory!);
             }
 
-            // DeleteOnClose releases the lock even if the process is killed, so a crash
-            // cannot leave a permanently poisoned cache entry.
             const int InitialDelayMilliseconds = 25;
             const int MaximumDelayMilliseconds = 500;
 
@@ -62,7 +84,7 @@ namespace Adbc.Drivers.Build.Caching
                         FileAccess.ReadWrite,
                         FileShare.None,
                         bufferSize: 1,
-                        FileOptions.DeleteOnClose);
+                        LeaseOptions);
                     return new FileLease(path, stream);
                 }
                 catch (IOException)
