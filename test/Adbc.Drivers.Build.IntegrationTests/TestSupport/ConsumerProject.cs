@@ -43,6 +43,19 @@ namespace Adbc.Drivers.Build.IntegrationTests.TestSupport
     {
         private static readonly Assembly TestAssembly = typeof(ConsumerProject).Assembly;
 
+        /// <summary>
+        /// Fixed name for the generated project and its assembly, independent of the
+        /// caller's label.
+        /// </summary>
+        /// <remarks>
+        /// Deriving it from the test name is a trap on Unix, where the apphost has no
+        /// extension: a project called "publish" produces
+        /// <c>bin/Debug/net8.0/publish</c> as a file, which then collides with the
+        /// publish directory the SDK wants to create at the same path. On Windows the
+        /// apphost is <c>publish.exe</c>, so the same test passes.
+        /// </remarks>
+        private const string AppName = "consumerapp";
+
         private readonly TempDirectory _temp;
 
         public ConsumerProject(string name)
@@ -79,7 +92,7 @@ namespace Adbc.Drivers.Build.IntegrationTests.TestSupport
 
         public string DriverCacheDirectory { get; }
 
-        public string ProjectFile => Path.Combine(ProjectDirectory, Name + ".csproj");
+        public string ProjectFile => Path.Combine(ProjectDirectory, AppName + ".csproj");
 
         public string LockFile => Path.Combine(ProjectDirectory, "adbc.drivers.lock.json");
 
@@ -102,7 +115,7 @@ $@"<Project Sdk=""Microsoft.NET.Sdk"">
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <RootNamespace>Consumer</RootNamespace>
-    <AssemblyName>{Name}</AssemblyName>
+    <AssemblyName>{AppName}</AssemblyName>
 {extraProperties ?? string.Empty}  </PropertyGroup>
 
   <ItemGroup>
@@ -134,7 +147,7 @@ $@"<Project Sdk=""Microsoft.NET.Sdk"">
             string relocated = Path.Combine(_temp.Path, relocatedName);
             CopyDirectory(PublishDirectory, relocated);
 
-            ProcessStartInfo startInfo = new ProcessStartInfo("dotnet", $"\"{Path.Combine(relocated, Name + ".dll")}\"")
+            ProcessStartInfo startInfo = new ProcessStartInfo("dotnet", $"\"{Path.Combine(relocated, AppName + ".dll")}\"")
             {
                 // Deliberately not the application's own directory: a relative path
                 // resolved against the working directory would pass here by accident.
