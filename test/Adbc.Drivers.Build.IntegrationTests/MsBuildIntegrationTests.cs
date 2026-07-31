@@ -88,14 +88,20 @@ namespace Adbc.Drivers.Build.IntegrationTests
             Assert.Contains("manifest_version = 1", manifest, StringComparison.Ordinal);
             Assert.Contains("[Driver.shared]", manifest, StringComparison.Ordinal);
 
-            // The manifest must point at the driver that was actually deployed.
-            string expected = Path.Combine(
-                consumer.OutputDirectory, "adbc", "fixture", "1.0.0", "win-x64", DriverFileName);
-            Assert.Contains(expected.Replace("\\", "\\\\"), manifest, StringComparison.Ordinal);
+            // Relative to the manifest's own directory, which is how the ADBC driver
+            // manager resolves it, and what keeps the output relocatable.
+            Assert.Contains(
+                "windows_amd64 = \"fixture/1.0.0/win-x64/" + DriverFileName + "\"",
+                manifest,
+                StringComparison.Ordinal);
+            Assert.DoesNotContain(
+                consumer.OutputDirectory.Replace("\\", "\\\\"),
+                manifest,
+                StringComparison.OrdinalIgnoreCase);
         }
 
         [Fact]
-        public void PublishIncludesDriversAndAManifestPointingAtThePublishDirectory()
+        public void PublishIncludesDriversAndARelocatableManifest()
         {
             using ConsumerProject consumer = new ConsumerProject("publish");
             consumer.WriteProject(DriverItem());
@@ -109,13 +115,18 @@ namespace Adbc.Drivers.Build.IntegrationTests
                 publish.ToString());
             Assert.True(consumer.PublishFileExists("adbc", "fixture.toml"));
 
-            // A manifest baked for $(TargetDir) would be wrong here, which is why publish
-            // generates its own.
+            // The published manifest must not name the build agent's publish directory:
+            // that path means nothing on the machine the application is deployed to.
             string manifest = File.ReadAllText(
                 Path.Combine(consumer.PublishDirectory, "adbc", "fixture.toml"));
-            string expected = Path.Combine(
-                consumer.PublishDirectory, "adbc", "fixture", "1.0.0", "win-x64", DriverFileName);
-            Assert.Contains(expected.Replace("\\", "\\\\"), manifest, StringComparison.Ordinal);
+            Assert.Contains(
+                "windows_amd64 = \"fixture/1.0.0/win-x64/" + DriverFileName + "\"",
+                manifest,
+                StringComparison.Ordinal);
+            Assert.DoesNotContain(
+                consumer.PublishDirectory.Replace("\\", "\\\\"),
+                manifest,
+                StringComparison.OrdinalIgnoreCase);
         }
 
         [Fact]
@@ -244,20 +255,21 @@ namespace Adbc.Drivers.Build.IntegrationTests
         }
 
         [Fact]
-        public void EmitsRelativeManifestPathsOnlyWhenOptedIn()
+        public void EmitsAbsoluteManifestPathsOnlyWhenOptedOut()
         {
-            using ConsumerProject consumer = new ConsumerProject("relative");
+            // Absolute paths remain available for a driver manager that requires them,
+            // but the result is valid only for the directory it was generated into.
+            using ConsumerProject consumer = new ConsumerProject("absolute");
             consumer.WriteProject(DriverItem());
             ResolveAgainstFixtureRegistry(consumer);
 
-            BuildResult build = consumer.Run("build", "-p:AdbcDriverRelativeManifestPaths=true");
+            BuildResult build = consumer.Run("build", "-p:AdbcDriverRelativeManifestPaths=false");
 
             Assert.True(build.Succeeded, build.ToString());
             string manifest = consumer.ReadOutputFile("adbc", "fixture.toml");
-            Assert.Contains(
-                "windows_amd64 = \"fixture/1.0.0/win-x64/" + DriverFileName + "\"",
-                manifest,
-                StringComparison.Ordinal);
+            string expected = Path.Combine(
+                consumer.OutputDirectory, "adbc", "fixture", "1.0.0", "win-x64", DriverFileName);
+            Assert.Contains(expected.Replace("\\", "\\\\"), manifest, StringComparison.Ordinal);
         }
 
         [Fact]

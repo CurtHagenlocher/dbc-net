@@ -27,11 +27,20 @@
     <AdbcDriverGenerateRuntimeManifests Condition="'$(AdbcDriverGenerateRuntimeManifests)' == ''">true</AdbcDriverGenerateRuntimeManifests>
 
     <!--
-      ADBC driver managers reject relative shared-library paths by default, so manifests
-      are generated with absolute paths for the directory they are written into. Opt in
-      only if your driver manager is configured to accept relative paths.
+      Relative by default, because a published application is normally relocated: the
+      publish directory on a build agent has no relationship to the path the application
+      will run from in a container image or a service host. An absolute path baked at
+      publish time is wrong there.
+
+      This is safe and correct rather than a compromise. The ADBC .NET driver manager
+      resolves Driver.shared against the *manifest's own directory* and requires the
+      result to stay within that directory, so a relative path is both relocatable and
+      more constrained than an absolute one.
+
+      Set this to false only for a driver manager that genuinely requires absolute paths;
+      the output is then valid only for the directory it was generated into.
     -->
-    <AdbcDriverRelativeManifestPaths Condition="'$(AdbcDriverRelativeManifestPaths)' == ''">false</AdbcDriverRelativeManifestPaths>
+    <AdbcDriverRelativeManifestPaths Condition="'$(AdbcDriverRelativeManifestPaths)' == ''">true</AdbcDriverRelativeManifestPaths>
 
     <!-- Only ever read by the explicit ResolveAdbcDriverLock target. -->
     <AdbcDriverRegistries Condition="'$(AdbcDriverRegistries)' == ''">https://dbc-cdn.columnar.tech/</AdbcDriverRegistries>

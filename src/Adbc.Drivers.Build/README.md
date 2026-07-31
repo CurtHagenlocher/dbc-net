@@ -70,7 +70,7 @@ git add adbc.drivers.lock.json
 | `AdbcDriverDeployOnBuild` | `true` | Copy into `$(TargetDir)`. |
 | `AdbcDriverDeployOnPublish` | `true` | Include in publish output. |
 | `AdbcDriverGenerateRuntimeManifests` | `true` | Write `<name>.toml` driver manifests. |
-| `AdbcDriverRelativeManifestPaths` | `false` | Emit relative `Driver.shared` paths (see below). |
+| `AdbcDriverRelativeManifestPaths` | `true` | Relative `Driver.shared` paths (see below). |
 | `AdbcDriverRegistries` | `https://dbc-cdn.columnar.tech/` | Registries, highest precedence first. Resolve step only. |
 | `AdbcDriverVerifyFileHashes` | `false` | Re-hash every cached file on every build. |
 
@@ -98,20 +98,25 @@ $(TargetDir)adbc/
     MANIFEST
 ```
 
-Point the ADBC driver manager at the `adbc` directory, for example by setting
-`ADBC_DRIVER_PATH` to `Path.Combine(AppContext.BaseDirectory, "adbc")`.
+Hand the ADBC driver manager your application's `adbc` directory:
 
-## Runtime manifests and absolute paths
+```csharp
+AdbcDriver driver = AdbcDriverManager.FindLoadDriver(
+    "snowflake",
+    additionalSearchPathList: Path.Combine(AppContext.BaseDirectory, "adbc"));
+```
 
-The ADBC manifest specification requires `Driver.shared`, and driver managers reject
-relative shared-library paths by default. Manifests are therefore generated **per
-destination**, with absolute paths, at the point the destination is known — once for
-`$(TargetDir)` and again for `$(PublishDir)`.
+## Runtime manifests and relocation
 
-The consequence is that a generated manifest is valid for the directory it was written
-into. Moving a published folder to a different path invalidates it; regenerate by
-publishing again, or set `AdbcDriverRelativeManifestPaths` to `true` if your driver
-manager is configured to accept relative paths.
+`Driver.shared` paths are **relative by default**. The ADBC driver manager resolves them
+against the manifest's own directory and requires the result to stay within it, so the
+published output relocates cleanly — which matters because `dotnet publish` normally
+produces an artifact that is deployed somewhere unrelated to the build agent. A useful
+side effect is that the build and publish manifests are byte-identical.
+
+Setting `AdbcDriverRelativeManifestPaths` to `false` emits absolute paths instead, for a
+driver manager that requires them. A manifest generated that way is valid only for the
+directory it was written into and does not survive being moved.
 
 ## Integrity
 

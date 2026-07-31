@@ -13,17 +13,21 @@ namespace Adbc.Drivers.Build.Packaging
     /// <remarks>
     /// <para>
     /// <c>Driver.shared</c> is required by the ADBC manifest specification and must name
-    /// the shared library. Implementations reject relative paths by default for security,
-    /// so the manifest has to contain an absolute path — which means it can only be
-    /// written once the final deployment directory is known. That is why manifests are
-    /// generated per destination (build output, then publish output) rather than being
-    /// copied out of the cache: a manifest baked at acquisition time would carry a stale
-    /// machine path.
+    /// the shared library. It may be relative, in which case the ADBC .NET driver manager
+    /// resolves it against the <em>manifest's own directory</em> and requires the result
+    /// to remain within that directory. Relative paths are therefore the default here:
+    /// they survive relocation, which matters because a published application is normally
+    /// deployed somewhere unrelated to the publish directory on the build agent.
     /// </para>
     /// <para>
-    /// The consequence is that a manifest is valid for the directory it was generated
-    /// into. Moving a published folder invalidates its absolute paths. Relative paths are
-    /// available through an explicit opt-in for callers whose driver manager permits them.
+    /// Absolute paths remain available for driver managers that require them, and are
+    /// why manifests are generated per destination rather than copied out of the cache.
+    /// In that mode a manifest is valid only for the directory it was generated into, so
+    /// moving a published folder invalidates it.
+    /// </para>
+    /// <para>
+    /// In relative mode the generated content does not depend on the destination at all,
+    /// so the build and publish manifests are byte-identical.
     /// </para>
     /// </remarks>
     internal static class RuntimeManifestGenerator

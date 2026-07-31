@@ -88,7 +88,11 @@ namespace Adbc.Drivers.Build.IntegrationTests.TestSupport
         public string PublishDirectory => Path.Combine(OutputDirectory, "publish");
 
         /// <summary>Writes a console project referencing the package under test.</summary>
-        public ConsumerProject WriteProject(string driverItems, string? extraProperties = null)
+        public ConsumerProject WriteProject(
+            string driverItems,
+            string? extraProperties = null,
+            string? extraPackageReferences = null,
+            string? programBody = null)
         {
             string project =
 $@"<Project Sdk=""Microsoft.NET.Sdk"">
@@ -103,7 +107,7 @@ $@"<Project Sdk=""Microsoft.NET.Sdk"">
 
   <ItemGroup>
     <PackageReference Include=""Adbc.Drivers.Build"" Version=""{PackageVersion}"" PrivateAssets=""all"" />
-  </ItemGroup>
+{extraPackageReferences ?? string.Empty}  </ItemGroup>
 
   <ItemGroup>
 {driverItems}  </ItemGroup>
@@ -114,10 +118,63 @@ $@"<Project Sdk=""Microsoft.NET.Sdk"">
 
             File.WriteAllText(
                 Path.Combine(ProjectDirectory, "Program.cs"),
-                "System.Console.WriteLine(System.IO.Path.Combine(System.AppContext.BaseDirectory, \"adbc\"));\n",
+                programBody
+                    ?? "System.Console.WriteLine(System.IO.Path.Combine(System.AppContext.BaseDirectory, \"adbc\"));\n",
                 new UTF8Encoding(false));
 
             return this;
+        }
+
+        /// <summary>
+        /// Copies the publish output to an unrelated directory and runs it there, which is
+        /// what deploying a service actually does to a published application.
+        /// </summary>
+        public (int ExitCode, string Output) PublishRelocateAndRun(string relocatedName)
+        {
+            string relocated = Path.Combine(_temp.Path, relocatedName);
+            CopyDirectory(PublishDirectory, relocated);
+
+            ProcessStartInfo startInfo = new ProcessStartInfo("dotnet", $"\"{Path.Combine(relocated, Name + ".dll")}\"")
+            {
+                // Deliberately not the application's own directory: a relative path
+                // resolved against the working directory would pass here by accident.
+                WorkingDirectory = _temp.Path,
+                RedirectStandardOutput = true,
+                RedirectStandardError = true,
+                UseShellExecute = false,
+            };
+
+            StringBuilder output = new StringBuilder();
+            using Process process = new Process { StartInfo = startInfo };
+            process.OutputDataReceived += (_, e) => { if (e.Data is not null) { lock (output) { output.AppendLine(e.Data); } } };
+            process.ErrorDataReceived += (_, e) => { if (e.Data is not null) { lock (output) { output.AppendLine(e.Data); } } };
+
+            process.Start();
+            process.BeginOutputReadLine();
+            process.BeginErrorReadLine();
+
+            if (!process.WaitForExit(milliseconds: 5 * 60 * 1000))
+            {
+                process.Kill(entireProcessTree: true);
+                throw new TimeoutException("The relocated application did not exit within 5 minutes.");
+            }
+
+            process.WaitForExit();
+            return (process.ExitCode, output.ToString());
+        }
+
+        private static void CopyDirectory(string source, string destination)
+        {
+            Directory.CreateDirectory(destination);
+            foreach (string directory in Directory.GetDirectories(source, "*", SearchOption.AllDirectories))
+            {
+                Directory.CreateDirectory(Path.Combine(destination, directory.Substring(source.Length + 1)));
+            }
+
+            foreach (string file in Directory.GetFiles(source, "*", SearchOption.AllDirectories))
+            {
+                File.Copy(file, Path.Combine(destination, file.Substring(source.Length + 1)), overwrite: true);
+            }
         }
 
         public BuildResult Run(string arguments, params string[] extraProperties)

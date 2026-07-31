@@ -103,9 +103,17 @@ namespace Adbc.Drivers.Build.IntegrationTests
                 consumer.PublishDirectory, "adbc", "snowflake", "1.11.0", "win-x64", "libadbc_driver_snowflake.dll");
             Assert.True(File.Exists(driver), publish.ToString());
 
-            // The published manifest must name the published driver, not the build one.
+            // Relocatable: the manifest names a path relative to itself, not the build
+            // agent's publish directory.
             string manifest = File.ReadAllText(Path.Combine(consumer.PublishDirectory, "adbc", "snowflake.toml"));
-            Assert.Contains(driver.Replace("\\", "\\\\"), manifest, StringComparison.Ordinal);
+            Assert.Contains(
+                "windows_amd64 = \"snowflake/1.11.0/win-x64/libadbc_driver_snowflake.dll\"",
+                manifest,
+                StringComparison.Ordinal);
+            Assert.DoesNotContain(
+                consumer.PublishDirectory.Replace("\\", "\\\\"),
+                manifest,
+                StringComparison.OrdinalIgnoreCase);
         }
     }
 }

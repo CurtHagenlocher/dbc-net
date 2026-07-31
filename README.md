@@ -108,40 +108,58 @@ used.
 
 ## Loading the drivers at run time
 
-This package puts the drivers on disk and writes the manifests. Pointing the ADBC driver
-manager at them is one line in your application:
+This package puts the drivers on disk and writes the manifests. Hand the driver manager
+your application's own driver directory:
 
 ```csharp
-Environment.SetEnvironmentVariable(
-    "ADBC_DRIVER_PATH",
-    Path.Combine(AppContext.BaseDirectory, "adbc"));
+using Apache.Arrow.Adbc.DriverManager;
+
+AdbcDriver driver = AdbcDriverManager.FindLoadDriver(
+    "sqlite",
+    additionalSearchPathList: Path.Combine(AppContext.BaseDirectory, "adbc"));
 ```
 
-`ADBC_DRIVER_PATH` is checked before user and system locations, so this is enough for a
-self-contained deployment.
+`additionalSearchPathList` is searched before `ADBC_DRIVER_PATH` and the user and system
+directories, so this works without mutating process-wide environment state. Setting
+`ADBC_DRIVER_PATH` to the same directory also works if you prefer.
 
-### The absolute-path caveat — please read this one
+This is verified end to end: an integration test acquires the real SQLite driver,
+publishes an application, **copies the output to an unrelated directory, and runs it
+there** with the working directory set somewhere else entirely.
 
-The ADBC manifest format requires `Driver.shared` to point at the shared library, and
-driver managers **reject relative paths by default** for security reasons. A manifest
-therefore has to contain an absolute path, which cannot be known until the output
-directory is known.
+### Publishing and relocation
 
-So manifests are generated **per destination**: once for your build output, and again
-for your publish output.
+`dotnet publish` usually produces an artifact that gets deployed somewhere else — a
+container image, a service host, a VM. The publish directory on your build agent has no
+relationship to the path the application eventually runs from.
 
-The consequence: **a generated manifest is valid for the directory it was generated
-into.** If you publish and then move or rename the folder, the paths inside
-`<driver>.toml` no longer resolve. Publish again to the final location, or generate the
-manifest at startup yourself.
+Generated manifests are therefore **relative by default**, and relocation just works.
 
-If your driver manager is configured to accept relative paths, opt out:
+This is safe rather than a compromise. The ADBC .NET driver manager resolves
+`Driver.shared` against **the manifest's own directory**, and requires the result to stay
+within it:
+
+```csharp
+// Apache.Arrow.Adbc, DriverManagerSecurity.ValidateAndResolveManifestPath
+string fullPath = Path.GetFullPath(Path.Combine(manifestDirectory, relativePath));
+if (!fullPath.StartsWith(canonicalManifestDir, StringComparison.OrdinalIgnoreCase))
+    throw new AdbcException("Manifest driver path resolves outside the manifest directory. ...");
+```
+
+So a relative manifest is *more* constrained than an absolute one, not less. A useful
+side effect: the manifest no longer depends on its destination, so the build and publish
+copies are byte-identical.
+
+If you need absolute paths for a driver manager that requires them:
 
 ```xml
 <PropertyGroup>
-  <AdbcDriverRelativeManifestPaths>true</AdbcDriverRelativeManifestPaths>
+  <AdbcDriverRelativeManifestPaths>false</AdbcDriverRelativeManifestPaths>
 </PropertyGroup>
 ```
+
+In that mode the manifest is valid **only for the directory it was generated into**, so
+moving a published folder breaks it — publish again to the final location instead.
 
 ---
 
@@ -185,7 +203,7 @@ direction, so one driver can track prereleases without opting everything else in
 | `AdbcDriverDeployOnBuild` | `true` | Copy into the build output. |
 | `AdbcDriverDeployOnPublish` | `true` | Include in publish output. |
 | `AdbcDriverGenerateRuntimeManifests` | `true` | Write `<name>.toml` driver manifests. |
-| `AdbcDriverRelativeManifestPaths` | `false` | Emit relative `Driver.shared` paths. |
+| `AdbcDriverRelativeManifestPaths` | `true` | Relative `Driver.shared` paths, resolved against the manifest's directory. Set to `false` for absolute paths, which do not survive relocation. |
 | `AdbcDriverRegistries` | the public registry | Registry base URLs, highest precedence first. Resolve step only. |
 | `AdbcDriverAllowPrerelease` | `false` | Let prereleases satisfy a constraint. Resolve step only. |
 | `AdbcDriverVerifyFileHashes` | `false` | Re-hash every cached file on every build. Correct but slow. |
@@ -432,12 +450,13 @@ Working and tested, at an early version. Resolution against public registries, t
 file, the content-addressed cache, and MSBuild build/publish integration are all
 implemented and covered by tests, including against the real public registry.
 
+Verified end to end against the real Apache ADBC .NET driver manager: the published
+output relocates and the driver loads.
+
 Not yet implemented:
 
 - OpenPGP signature verification and licence allow/deny policy
 - Private registries and their credential contract
-- Verification against the Apache ADBC .NET driver manager, which may yet change the
-  runtime manifest strategy
 
 ## Licence
 
