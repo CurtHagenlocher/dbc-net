@@ -1,0 +1,99 @@
+name: Nightly (public registry)
+
+# The only tests that exercise the live registry index and real driver archives.
+# They depend on a third-party CDN, so they cannot gate a commit — but if the index
+# schema or a published archive changes, this is what notices.
+on:
+  schedule:
+    - cron: "17 5 * * *"
+  workflow_dispatch:
+
+concurrency:
+  group: nightly
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+env:
+  DOTNET_NOLOGO: true
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+  ADBC_DRIVERS_TESTS_NETWORK: "1"
+
+jobs:
+  network-test:
+    name: network test (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: |
+            8.0.x
+            10.0.x
+
+      # Deliberately not cached. A warm driver cache would hide a change to a published
+      # archive, which is one of the things this run exists to detect.
+      - name: Test against the public registry
+        run: dotnet test dbc-net.slnx -c Release --logger "trx;LogFileName=network-results.trx"
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: network-results-${{ matrix.os }}
+          path: "**/TestResults/*.trx"
+          retention-days: 14
+
+  sample:
+    name: sample (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: |
+            8.0.x
+            10.0.x
+
+      # The sample consumes the package from the local feed, so it also covers the
+      # NuGet.config and packaging path that the integration tests reach differently.
+      - name: Pack
+        run: dotnet pack src/Adbc.Drivers.Build/Adbc.Drivers.Build.csproj -c Release
+
+      # The sample pins win-x64 and linux-x64 regardless of host, so every runner
+      # exercises cross-RID acquisition.
+      - name: Build the sample
+        run: dotnet build samples/SnowflakeSample -p:AdbcDriverNetworkMode=Online
+
+      - name: Run the sample
+        run: dotnet run --project samples/SnowflakeSample --no-build
+
+      - name: Verify the committed lock still reproduces
+        shell: bash
+        run: |
+          set -euo pipefail
+          dotnet build samples/SnowflakeSample -t:ResolveAdbcDriverLock
+          if ! git diff --quiet -- samples/SnowflakeSample/adbc.drivers.lock.json; then
+            echo "Re-resolving changed the committed lock file:"
+            git diff -- samples/SnowflakeSample/adbc.drivers.lock.json
+            exit 1
+          fi
+          echo "Committed lock file reproduced exactly."
