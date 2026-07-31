@@ -127,6 +127,36 @@ This is verified end to end: an integration test acquires the real SQLite driver
 publishes an application, **copies the output to an unrelated directory, and runs it
 there** with the working directory set somewhere else entirely.
 
+### Finding out what was deployed
+
+You do not need anything from this package to inspect what shipped. The generated
+manifests are ordinary ADBC driver manifests, and `Apache.Arrow.Adbc` reads them:
+
+```csharp
+using Apache.Arrow.Adbc.DriverManager;
+
+string adbcDir = Path.Combine(AppContext.BaseDirectory, "adbc");
+
+foreach (string toml in Directory.GetFiles(adbcDir, "*.toml"))
+{
+    DriverManifest m = DriverManifest.LoadFromFile(toml);
+
+    // LibraryPath is relative to the manifest's directory by default.
+    string library = Path.Combine(adbcDir, m.LibraryPath);
+
+    Console.WriteLine($"{m.Name} {m.Version} ({m.License}) from {m.Source} → {library}");
+}
+```
+
+`Source` reads `Adbc.Drivers.Build`, so a deployed driver says what produced it without
+anyone needing access to the build.
+
+This is why there is no separate index file: enumeration, version, publisher, licence,
+entrypoint, and path all come from the manifests through the official API. What the
+manifests *don't* carry is provenance — the source URL, archive and driver hashes, and
+signature status. That lives in the lock file today and is planned as a deployed
+provenance document alongside signature verification.
+
 ### Publishing and relocation
 
 `dotnet publish` usually produces an artifact that gets deployed somewhere else — a

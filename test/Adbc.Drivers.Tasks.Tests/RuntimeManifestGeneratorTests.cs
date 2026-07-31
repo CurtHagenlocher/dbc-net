@@ -69,6 +69,21 @@ namespace Adbc.Drivers.Build.Tests
         }
 
         [Fact]
+        public void RecordsWhatGeneratedTheManifest()
+        {
+            // The format has a 'source' field for exactly this, surfaced as
+            // DriverManifest.Source, so a deployed driver says where it came from without
+            // anyone needing access to the build that produced it.
+            using TempDirectory temp = new TempDirectory("manifest");
+            string root = temp.Combine("adbc");
+
+            RuntimeManifestGenerator.Generate(Plan(), root, root, useRelativePaths: true);
+            TomlTable manifest = TomlParser.Parse(File.ReadAllText(Path.Combine(root, "snowflake.toml")));
+
+            Assert.Equal("Adbc.Drivers.Build", manifest.GetString("source"));
+        }
+
+        [Fact]
         public void StripsTheVPrefixFromTheAdbcVersion()
         {
             using TempDirectory temp = new TempDirectory("manifest");
