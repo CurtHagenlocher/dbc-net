@@ -1,5 +1,8 @@
 # dbc-net
 
+[![CI](https://github.com/CurtHagenlocher/dbc-net/actions/workflows/ci.yml/badge.svg)](https://github.com/CurtHagenlocher/dbc-net/actions/workflows/ci.yml)
+[![Nightly](https://github.com/CurtHagenlocher/dbc-net/actions/workflows/nightly.yml/badge.svg)](https://github.com/CurtHagenlocher/dbc-net/actions/workflows/nightly.yml)
+
 Deploy [ADBC](https://arrow.apache.org/adbc/) database drivers into your .NET build and
 publish output, reproducibly.
 
@@ -447,6 +450,12 @@ ADBC_DRIVERS_TESTS_NETWORK=1 dotnet test
 
 Those are the only tests that confirm the live registry index and a real driver archive
 still parse, which is worth a scheduled run even though they cannot gate every commit.
+
+CI runs the offline suite on Linux, Windows, and macOS for every push and pull request,
+and asserts the packed package layout. A nightly workflow runs the network suite on all
+three platforms, builds and runs the sample, and checks that re-resolving reproduces the
+committed lock file byte for byte. Its driver cache is deliberately not reused between
+runs, since a warm cache would hide a change to a published archive.
 
 The sample is not in the solution, because it consumes the package from
 `artifacts/package`:
